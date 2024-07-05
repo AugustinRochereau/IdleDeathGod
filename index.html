@@ -6,6 +6,7 @@
     <!-- Stylesheets -->
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="stylesText.css">
+    <link rel="stylesheet" href="stylesUpgrade.css">
     <link rel="stylesheet" href="stylesAchievements.css">
     <!--    Fonts    -->
     <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
@@ -34,19 +35,25 @@
 
     <div class="upgradButtonContainer">
         <button class="upgradeButton" id="killHumanButton">Claim 1 mortal soul</button>
-        <button class="upgradeButton" id="technologyUpgrade">Fire<br>Cost: 50 souls</button>
+        <button class="upgradeButton" onclick="toggleTechUpgradeWindow()">Tech Upgrades</button>
         <button class="upgradeButton" id="tickspeedUpgrade">Buy Tickspeed<br>Cost: 100 souls</button>
         <button class="upgradeButton" id="diseaseButton">Spread Disease<br>Cost: 1000 souls</button>
-        <button class="upgradeButton" onclick="showUpgradeWindow()">TechUpgrades</button>
         <div id="upgradeWindow" class="upgradeWindow">
             <div class="upgradeWindowHeader">
-                <span class="closeButton" onclick="closeUpgradeWindow()">×</span>
+                <span class="closeButton" onclick="toggleTechUpgradeWindow()">×</span>
                 <h2>Tech Upgrades</h2>
             </div>
             <div class="upgradeWindowBody">
-                <!-- Tech Tree Buttons Here -->
-                <button class="upgradeButton">Fire<br>Cost: 50 souls</button>
-                <!-- Add more buttons as needed -->
+                <div class="upgradeContent">
+                    <!-- Tech Tree Buttons Here -->
+                    <button class="techUpgradeTreeButton" id="tech-fire" style="left: 300px; top: 300px;" onclick="buyTechUpgrade(this.id)">Fire<br>Cost: 50 souls
+                        <span class="upgradeDescription">Max humans multiplier * 2</span>
+                    </button>
+                    <button class="techUpgradeTreeButton" id="tech-tools1" style="left: 500px; top: 300px;" onclick="buyTechUpgrade(this.id)">Tools<br>Cost: 100 souls
+                        <span class="upgradeDescription">Max humans multiplier * 2</span>
+                    </button>
+                </div>
+                <svg id="linesContainer"></svg>
             </div>
         </div>
     </div>

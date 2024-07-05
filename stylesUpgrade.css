@@ -1,0 +1,161 @@
+.upgradButtonContainer{
+    position: absolute;
+    left: 10px;
+    right: 75%;
+    top: 260px;
+}
+
+
+.upgradeButton {
+    background-color: crimson; 
+    display: block;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 10px; 
+    width: 150px;
+    height: 60px;
+    font-family: inherit;
+}
+
+.upgradeButton:hover {
+    background-color: rgb(158, 16, 44); 
+}
+
+.upgradeButton:active {
+    background-color: rgb(126, 12, 35); 
+}
+
+.techUpgradeTreeButtonCanBuy {
+    background-color: crimson; 
+    display: block;
+    color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 150px;
+    height: 60px;
+    font-family: inherit;
+    position: absolute;  
+    z-index: 10;
+    transform: translate(-50%, -50%);
+}
+
+.techUpgradeTreeButtonCanBuy:hover {
+    background-color: rgb(158, 16, 44); 
+}
+
+.techUpgradeTreeButtonCanBuy:active {
+    background-color: rgb(126, 12, 35); 
+}
+
+.techUpgradeTreeButtonCannotBuy {
+    background-color: #1d2025; 
+    display: block;
+    color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 150px;
+    height: 60px;
+    font-family: inherit;
+    position: absolute;  
+    z-index: 10;
+    transform: translate(-50%, -50%);
+}
+
+.techUpgradeTreeButtonActive {
+    background-color: crimson; 
+    display: block;
+    color: #1d2025;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 150px;
+    height: 60px;
+    font-family: inherit;
+    position: absolute;  
+    z-index: 10;
+    transform: translate(-50%, -50%);
+}
+
+.upgradeWindow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #30353e;
+    border: 1px solid #ccc;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    height: 400px;
+    display: none;
+    z-index: 1000;
+    overflow: hidden;
+}
+
+.upgradeWindowHeader {
+    background-color: crimson;
+    height: 35px;
+    color: rgb(255, 255, 255);
+    cursor: move;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.upgradeWindowHeader:hover {
+    background-color: rgb(158, 16, 44);
+}
+
+.upgradeWindowHeader:active {
+    background-color: rgb(126, 12, 35);
+}
+
+.upgradeWindowBody {
+    padding: 20px;
+    overflow: hidden;
+    height: calc(100% - 50px);
+    position: relative;
+    cursor: grab;
+}
+
+.upgradeWindowBody {
+    cursor: grabbing;
+}
+
+.upgradeContent{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 600px;
+    height: 600px;
+    transform: translate(calc(-50% + 200px), calc(-50% + 200px));
+    z-index: 9;
+}
+
+.closeButton {
+    cursor: pointer;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 600px;
+    height: 600px;
+    pointer-events: none;
+    z-index: 5;
+    transform: translate(calc(-50% + 200px), calc(-50% + 200px));
+}
+
+.upgradeDescription {
+    display: block; 
+    margin-top: 5px; 
+    font-size: 11px; 
+    color: #ccc;
+  }

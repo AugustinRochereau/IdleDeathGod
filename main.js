@@ -3,7 +3,7 @@ let growthRate = 0.1;
 let maxLivingHumans = 100;
 let growthSlowdown = 2; // exponent 
 let deathRate = 0;
-let deadSouls = 100;
+let deadSouls = 0;
 let mortalRealmNumber = 1;
 let lifeExpectancy = 20;
 let years = 0;
@@ -16,29 +16,9 @@ const updatesPerSecond = 60;
 const timePerUpdate = 1000 / updatesPerSecond;
 
 upgradeCosts = {
-    "technologyUpgrade": 50,
     "diseaseButton": 1000,
     "tickspeedUpgrade": 100,
 }
-
-upgradeNumbers = {
-    "technologyUpgrade": 0,
-    "diseaseButton": 0,
-    "tickspeedUpgrade": 0,
-}
-
-techUpgradeNames = {
-    1: "Fire",
-    2: "Tools",
-    3: "Crops",
-}
-
-techUpgradeHeaderNews = {
-    1: "You bring humans fire. It helps them survive.",
-    2: "Out of boredom, you take human form and explain to one guy how to make tools using rocks. He was very impressed.",
-    3: "Growing crops helps the little lifeforms develop a settlement."
-}
-
 
 function updatePopulation() {
     const currentTime = performance.now();
@@ -49,7 +29,7 @@ function updatePopulation() {
     if (deltaTime >= timePerUpdate) {
         deathRate = 1 / (lifeExpectancy);
 
-        let growth = Math.sqrt(soulPoints + 1) * growthRate * livingHumans * (1 - livingHumans / maxLivingHumans) ** growthSlowdown * deltaTime * tickspeed / 1000;
+        let growth = (soulPoints + 1) * growthRate * livingHumans * (1 - livingHumans / maxLivingHumans) ** growthSlowdown * deltaTime * tickspeed / 1000;
         let deaths = deathRate * livingHumans * deltaTime * tickspeed / 1000;
         livingHumans += growth * (1 + randomGrowthAffect) - deaths;
         deadSouls += deaths;
@@ -66,15 +46,15 @@ function updatePopulation() {
 
 function nextMortalRealm() {
     displayMortalRealmResetScreen();
+    TextBox.addText("You are entering the mortal realm number " + mortalRealmNumber);
 }
 
 function displayMortalRealmResetScreen(){
     const screen = document.getElementById("mortalRealmReset");
     const text = document.getElementById("mortalRealmResetText");
     screen.style.display = "block";
-    let soulPointsGain = Math.floor(Math.max(0, Math.log10(deadSouls)));
-    text.innerHTML =  "<span style='font-size: 30px;'>You are entering mortal realm number " + numberFormat(mortalRealmNumber) + ".</span><br>" +
-                        "<span class='godText'>You led the humans for " + floatNumberFormat(years) + " years.<br>" +
+    let soulPointsGain = (Math.max(0, Math.log10(deadSouls)));
+    text.innerHTML = "<span class='godText'>You led the humans for " + floatNumberFormat(years) + " years.<br>" +
                         "For the souls you've watched over, I'll give you " + floatNumberFormat(soulPointsGain) + 
                         " soul points.</span><br>Click anywhere to continue...";
 
@@ -92,7 +72,7 @@ function resetToDefaultValues() {
     maxLivingHumans = 100;
     growthSlowdown = 2; // exponent 
     deathRate = 0;
-    deadSouls = 100;
+    deadSouls = 0;
     lifeExpectancy = 20;
     years = 0;
     tickspeed = 1;
@@ -146,7 +126,7 @@ function statisticsDisplay() {
                         mortalRealmNumber + '.<br><span style="font-size: 12px;">It is year '+ Math.floor(years) + 
                         ', tickspeed is ' + floatNumberFormat(tickspeed) +'<br>Human life expectancy: ' + 
                         Math.floor(lifeExpectancy) + ' years.<br>Death rate: ' + deathRate.toExponential(2) + ".<br>" + 
-                        "<span class='godText'> You have " + numberFormat(soulPoints) + " soul points, boosting growth rate by " + floatNumberFormat(Math.sqrt(soulPoints + 1)) +"</span></span>";
+                        "<span class='godText'> You have " + floatNumberFormat(soulPoints) + " soul points, boosting growth rate by " + floatNumberFormat(soulPoints + 1) +"</span></span>";
 }
 
 setInterval(updatePopulation, timePerUpdate);
@@ -165,28 +145,6 @@ function setGameActions() {
             TextBox.addText("The entire mortal population is now dead. You have complete control over" +
                             " the underworld, but your realm will stagnate until eternity...")
         }
-    });
-
-    document.getElementById("technologyUpgrade").addEventListener("click", function(){
-        upgradeButton = document.getElementById("technologyUpgrade");
-        let upgradeCost = upgradeCosts["technologyUpgrade"];
-
-        if (upgradeCost <= deadSouls) {
-            deadSouls -= upgradeCost
-            maxLivingHumans *= 2;
-            upgradeCosts["technologyUpgrade"] *= 2;
-            upgradeNumbers["technologyUpgrade"] += 1;
-            if ((upgradeNumbers["technologyUpgrade"] + 1) in techUpgradeNames){
-                upgradeButton.innerHTML = techUpgradeNames[upgradeNumbers["technologyUpgrade"] + 1] + "<br>Cost: " + upgradeCosts["technologyUpgrade"] + " souls";
-            } else {
-                upgradeButton.style.color = 'gray';
-                upgradeButton.removeEventListener("click", this);
-            }
-
-            TextBox.addText(techUpgradeHeaderNews[upgradeNumbers["technologyUpgrade"]]);
-        }
-
-        displayCounters();
     });
 
     document.getElementById("tickspeedUpgrade").addEventListener("click", function() {
