@@ -1,3 +1,56 @@
+.black-text {
+    color: black;
+}
+
 .godText{
-    color: rgb(198, 84, 221);
+    color: rgb(215, 16, 255);
+    font-weight: bold;
+}
+
+#mortalRealmResetText {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 20px;
+    text-align: center;
+}
+
+.scrollingHeader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    overflow: hidden;
+    background-color: #000000;
+    z-index: 990;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    font-size: 18px;
+    white-space: nowrap;
+}
+
+.scrollingText {
+    white-space: nowrap;
+    display: inline-block;
+    animation: scrollText 10s linear infinite;
+    color: rgb(255, 255, 255);
+}
+
+@keyframes scrollText {
+    0% {
+        transform: translateX(150%);
+    }
+    5% {
+        transform: translateX(100%);
+    }
+    95%{
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(-150%);
+    }
 }

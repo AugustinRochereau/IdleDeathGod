@@ -6,11 +6,13 @@
     <!-- Stylesheets -->
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="stylesText.css">
+    <link rel="stylesheet" href="stylesAchievements.css">
     <!--    Fonts    -->
     <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
     <!--   Scripts   -->
     <script src="textBox.js"></script>
     <script src="featsManager.js"></script>
+    <script src="techUpgrades.js"></script>
     <title>Idle Death God</title>
 </head>
 <script src="main.js"></script>
@@ -19,15 +21,34 @@
     <div class="scrollingHeader" id="textContainer"></div>
 
     <!-- MORTAL REALM RESET SCREEN -->
-    <div class="mortalRealmResetScreen" id="mortalRealmReset">Click anywhere to continue...</div>
+    <div class="mortalRealmResetScreen" id="mortalRealmReset">
+        <div id="mortalRealmResetText"></div>
+    </div>
 
     <!-- FEATS DESCRIPTION POPUP -->    
     <div id="achievementPopup" style="display: none;">
         <p id="achievementDescription"></p>
     </div>
+    <div id="statisticsDisplay"></div>
+    <div id="achievementNotification"></div>
+
     <div class="upgradButtonContainer">
         <button class="upgradeButton" id="killHumanButton">Claim 1 mortal soul</button>
-        <button class="upgradeButton" id="technologyUpgrade">Technology Upgrade 1</button>
+        <button class="upgradeButton" id="technologyUpgrade">Fire<br>Cost: 50 souls</button>
+        <button class="upgradeButton" id="tickspeedUpgrade">Buy Tickspeed<br>Cost: 100 souls</button>
+        <button class="upgradeButton" id="diseaseButton">Spread Disease<br>Cost: 1000 souls</button>
+        <button class="upgradeButton" onclick="showUpgradeWindow()">TechUpgrades</button>
+        <div id="upgradeWindow" class="upgradeWindow">
+            <div class="upgradeWindowHeader">
+                <span class="closeButton" onclick="closeUpgradeWindow()">×</span>
+                <h2>Tech Upgrades</h2>
+            </div>
+            <div class="upgradeWindowBody">
+                <!-- Tech Tree Buttons Here -->
+                <button class="upgradeButton">Fire<br>Cost: 50 souls</button>
+                <!-- Add more buttons as needed -->
+            </div>
+        </div>
     </div>
     <div class="container">
         <div class="pillar left-pillar">

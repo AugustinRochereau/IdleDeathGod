@@ -7,7 +7,7 @@ const TextBox = {
     textQueue: [],
     typing: false,
     textBeingDisplayed: null,
-    textSpeed: 100, // Adjust the typing speed as needed
+    textSpeed: 120, // Adjust the typing speed as needed
     
     init: function(containerId) {
         this.textContainer = document.getElementById(containerId);
