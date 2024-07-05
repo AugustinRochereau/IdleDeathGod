@@ -5,7 +5,7 @@ function techUpgrade(name, cost, isactive, canbuy) {
     this.canbuy = canbuy;
 }
 
-const technologies = {
+technologies = {
     "tech-fire": new techUpgrade("Fire", 50, false, true),
     "tech-tools1": new techUpgrade("Tools 1", 100, false, false),
 }

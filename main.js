@@ -46,7 +46,6 @@ function updatePopulation() {
 
 function nextMortalRealm() {
     displayMortalRealmResetScreen();
-    TextBox.addText("You are entering the mortal realm number " + mortalRealmNumber);
 }
 
 function displayMortalRealmResetScreen(){
@@ -54,7 +53,8 @@ function displayMortalRealmResetScreen(){
     const text = document.getElementById("mortalRealmResetText");
     screen.style.display = "block";
     let soulPointsGain = (Math.max(0, Math.log10(deadSouls)));
-    text.innerHTML = "<span class='godText'>You led the humans for " + floatNumberFormat(years) + " years.<br>" +
+    text.innerHTML = "<span style='font-size: 25px;'>You are entering mortal realm " + numberFormat(mortalRealmNumber) + ".</span><br>" + 
+                        "<span class='godText'>You led the humans for " + floatNumberFormat(years) + " years.<br>" +
                         "For the souls you've watched over, I'll give you " + floatNumberFormat(soulPointsGain) + 
                         " soul points.</span><br>Click anywhere to continue...";
 
@@ -89,8 +89,12 @@ function resetToDefaultValues() {
         "tickspeedUpgrade": 0,
     }   
 
-    document.getElementById("technologyUpgrade").innerHTML = "Fire<br>Cost: 50 souls";
     document.getElementById("tickspeedUpgrade").innerHTML = "Buy Tickspeed<br>Cost: 100 souls";
+
+    technologies = {
+        "tech-fire": new techUpgrade("Fire", 50, false, true),
+        "tech-tools1": new techUpgrade("Tools 1", 100, false, false),
+    }
 }
 
 function hideMortalRealmResetScreen(){
@@ -161,9 +165,14 @@ function setGameActions() {
     });
 
     document.getElementById("diseaseButton").addEventListener("click", function() {
-        let sick = livingHumans * 0.9;
-        livingHumans -= sick;
-        deadSouls += sick;
+
+        if (deadSouls >= 1000) {
+            deadSouls -= 1000;
+            let sick = livingHumans * 0.95;
+            livingHumans -= sick;
+            deadSouls += sick;
+        }
+        TextBox.addText("You inflict a ferocious disease to the humans, effectively killing 95% of them.")
         displayCounters();
     });
 
