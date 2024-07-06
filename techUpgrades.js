@@ -11,6 +11,7 @@ technologies = {
     "tech-crops": new techUpgrade("Crops", 500, false, false),
     "tech-huts": new techUpgrade("Huts", 200, false, false),
     "tech-speech": new techUpgrade("Speech", 1000, false, false),
+    "tech-unlock-soul-vessels": new techUpgrade("Unlock Soul Vessels", 2000, false, false),
 }
 
 techUpgradeWindowActive = false;
@@ -38,6 +39,7 @@ function buyTechUpgrade(buttonId){
                 case "Crops":
                     maxLivingHumans *= 2;
                     TextBox.addText("--PLACEHOLDER--.");
+                    technologies["tech-unlock-soul-vessels"].canbuy = true;
                     break;
                 case "Huts":
                     growthSlowdown -= 0.2;
@@ -46,6 +48,9 @@ function buyTechUpgrade(buttonId){
                 case "Speech":
                     soulPointMultiplier *= 1.2;
                     TextBox.addText("God is happy that you brought his creatures all the way to this advanced form of communication.")
+                case "Unlock Soul Vessels":
+                    document.getElementById("soulVessels").style.display = "block";
+                    TextBox.addText("Tinkering with the fabric of souls led to the creation of soul vessels. More souls for you")
                 default:
                     break;
             }
@@ -75,7 +80,7 @@ function updateTechButtonsDisplay() {
             button.classList.remove("techUpgradeTreeButtonCanBuy");
             button.classList.remove("techUpgradeTreeButtonActive");
 
-            button.classList.add("techUpgradeTreeButtonCanBuy");            
+            button.classList.add("techUpgradeTreeButtonCanBuy");         
         }
     }
 }
@@ -94,7 +99,8 @@ function drawAllLines() {
     drawLine("tech-fire", "tech-tools1");
     drawLine("tech-tools1", "tech-crops");
     drawLine("tech-tools1", "tech-huts");
-    drawLine("tech-huts", "tech-speech")
+    drawLine("tech-huts", "tech-speech");
+    drawLine("tech-crops", "tech-unlock-soul-vessels")
 }
 
 function drawLine(fromId, toId) {
@@ -176,7 +182,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     var startX, startY, scrollLeft, scrollTop;
 
     upgradeBody.addEventListener('mousedown', (e) => {
-        if ((e.button === 2) || (e.button === 0) ) { // Right or left mouse button
+        if (e.button === 0 || e.button === 2) { // Left or right mouse button
             isPanning = true;
             startX = e.clientX;
             startY = e.clientY;
@@ -191,8 +197,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
         e.preventDefault();
         const x = e.clientX;
         const y = e.clientY;
-        const walkX = (x - startX); 
-        const walkY = (y - startY); 
+        const walkX = (x - startX); // Calculate distance moved
+        const walkY = (y - startY); // Calculate distance moved
         upgradeBody.scrollLeft = scrollLeft - walkX;
         upgradeBody.scrollTop = scrollTop - walkY;
     });

@@ -130,8 +130,8 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 600px;
-    height: 600px;
+    width: 1000px;
+    height: 1000px;
     transform: translate(calc(-50% + 200px), calc(-50% + 200px));
     z-index: 9;
 }
@@ -146,8 +146,8 @@ svg {
     position: absolute;
     top: 0;
     left: 0;
-    width: 600px;
-    height: 600px;
+    width: 1000px;
+    height: 1000px;
     pointer-events: none;
     z-index: 5;
     transform: translate(calc(-50% + 200px), calc(-50% + 200px));

@@ -19,10 +19,12 @@ const timePerUpdate = 1000 / updatesPerSecond;
 upgradeCosts = {
     "diseaseButton": 1000,
     "tickspeedUpgrade": 100,
+    "soulVessels": 1000,
 }
 
 upgradeNumbers = {
     "tickspeedUpgrade": 0,
+    "soulVessels": 0,
 }
 
 function updatePopulation() {
@@ -38,7 +40,7 @@ function updatePopulation() {
         let growth = (soulPoints + 1) * growthRate * livingHumans * (1 - livingHumans / Math.max(maxLivingHumans, livingHumans + 20)) ** growthSlowdown * deltaTime * tickspeed / 1000;
         let deaths = deathRate * livingHumans * deltaTime * tickspeed / 1000;
         livingHumans += growth * (1 + randomGrowthAffect) - deaths;
-        deadSouls += deaths;
+        deadSouls += (upgradeNumbers["soulVessels"] + 1) * deaths;
         lastUpdateTime = currentTime;
         years += deltaTime * tickspeed / 1000;
     }
@@ -103,13 +105,25 @@ function resetToDefaultValues() {
         "tech-crops": new techUpgrade("Crops", 500, false, false),
         "tech-huts": new techUpgrade("Huts", 200, false, false),
         "tech-speech": new techUpgrade("Speech", 1000, false, false),
+        "tech-unlock-soul-vessels": new techUpgrade("Unlock Soul Vessels", 2000, false, false),
     }
-    
+
     updateTechButtonsDisplay();
 }
 
 function hideMortalRealmResetScreen(){
     document.getElementById("mortalRealmReset").style.display = "none";
+}
+
+function buySoulVessel(){
+    const soulVesselsButton = document.getElementById("soulVessels");
+    if (deadSouls >= upgradeCosts["soulVessels"]){
+        deadSouls = 0;
+        upgradeNumbers["soulVessels"] += 1;
+        upgradeCosts["soulVessels"] *= 2;
+    }
+    soulVesselsButton.innerHTML = "Next Soul Vessel: " + numberFormat(upgradeCosts["soulVessels"]) +" souls" + 
+                        '<span class="upgradeDescription" style="font-size: 10px;">Reset souls for a boost to soul gains</span>'
 }
 
 function displayCounters() {
