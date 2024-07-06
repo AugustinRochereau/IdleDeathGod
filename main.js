@@ -1,4 +1,4 @@
-let livingHumans = 2;
+let livingHumans = 2000000;
 let growthRate = 0.1;
 let maxLivingHumans = 100;
 let growthSlowdown = 2; // exponent 
@@ -10,6 +10,7 @@ let years = 0;
 let tickspeed = 1;
 let soulPoints = 0;
 let maxGrowthAffect = 0.1;
+let soulPointMultiplier = 1;
 
 let lastUpdateTime = 0;
 const updatesPerSecond = 60;
@@ -20,6 +21,10 @@ upgradeCosts = {
     "tickspeedUpgrade": 100,
 }
 
+upgradeNumbers = {
+    "tickspeedUpgrade": 0,
+}
+
 function updatePopulation() {
     const currentTime = performance.now();
     const deltaTime = currentTime - lastUpdateTime;
@@ -27,9 +32,10 @@ function updatePopulation() {
     let randomGrowthAffect = (Math.random() * 2 - 1) * maxGrowthAffect;
 
     if (deltaTime >= timePerUpdate) {
+
         deathRate = 1 / (lifeExpectancy);
 
-        let growth = (soulPoints + 1) * growthRate * livingHumans * (1 - livingHumans / maxLivingHumans) ** growthSlowdown * deltaTime * tickspeed / 1000;
+        let growth = (soulPoints + 1) * growthRate * livingHumans * (1 - livingHumans / Math.max(maxLivingHumans, livingHumans + 20)) ** growthSlowdown * deltaTime * tickspeed / 1000;
         let deaths = deathRate * livingHumans * deltaTime * tickspeed / 1000;
         livingHumans += growth * (1 + randomGrowthAffect) - deaths;
         deadSouls += deaths;
@@ -39,6 +45,8 @@ function updatePopulation() {
     if (Math.floor(livingHumans) <= 0){
         checkAchievement1();
         nextMortalRealm();
+    } else if (Math.floor(livingHumans) >= maxLivingHumans){
+        checkAchievement2();
     }
     displayCounters();
     statisticsDisplay();
@@ -52,7 +60,7 @@ function displayMortalRealmResetScreen(){
     const screen = document.getElementById("mortalRealmReset");
     const text = document.getElementById("mortalRealmResetText");
     screen.style.display = "block";
-    let soulPointsGain = (Math.max(0, Math.log10(deadSouls)));
+    let soulPointsGain = (Math.max(0, Math.log10(deadSouls) * soulPointMultiplier - soulPoints));
     text.innerHTML = "<span style='font-size: 25px;'>You are entering mortal realm " + numberFormat(mortalRealmNumber) + ".</span><br>" + 
                         "<span class='godText'>You led the humans for " + floatNumberFormat(years) + " years.<br>" +
                         "For the souls you've watched over, I'll give you " + floatNumberFormat(soulPointsGain) + 
@@ -84,8 +92,6 @@ function resetToDefaultValues() {
     }
     
     upgradeNumbers = {
-        "technologyUpgrade": 0,
-        "diseaseButton": 0,
         "tickspeedUpgrade": 0,
     }   
 
@@ -94,7 +100,12 @@ function resetToDefaultValues() {
     technologies = {
         "tech-fire": new techUpgrade("Fire", 50, false, true),
         "tech-tools1": new techUpgrade("Tools 1", 100, false, false),
+        "tech-crops": new techUpgrade("Crops", 500, false, false),
+        "tech-huts": new techUpgrade("Huts", 200, false, false),
+        "tech-speech": new techUpgrade("Speech", 1000, false, false),
     }
+    
+    updateTechButtonsDisplay();
 }
 
 function hideMortalRealmResetScreen(){
@@ -171,8 +182,8 @@ function setGameActions() {
             let sick = livingHumans * 0.95;
             livingHumans -= sick;
             deadSouls += sick;
+            TextBox.addText("You inflict a ferocious disease to the humans, effectively killing 95% of them.")
         }
-        TextBox.addText("You inflict a ferocious disease to the humans, effectively killing 95% of them.")
         displayCounters();
     });
 

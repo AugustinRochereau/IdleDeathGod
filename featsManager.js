@@ -1,13 +1,16 @@
 achievements_descriptions = {
-    'a1': '<h5>Not a chance for the living.</h5> </br> Be the proud owner of less than 5 souls with no more live humans.',
+    'a1': '<h5>Not a chance for the living.</h5></br> Be the proud owner of less than 5 souls with no more live humans.',
+    'a2': '<h5>Can you actually ?</h5></br> Have 100x more humans than the max number of living humans.'
 }
 
 achievement_names = {
     'a1': "Not a chance for the living",
+    'a2': "Can you actually ?"
 }
 
 achievement_unlocks = {
     'a1': false,
+    'a2': false,
 }
 
 function getAchievementDescription(achievementId) {
@@ -50,5 +53,14 @@ function checkAchievement1(){
         showAchievementFooterOnUnlock('Not a chance for the living');
         const a1 = document.getElementById("a1");
         a1.src = "sprites/a1_sprite.png";
+    }
+}
+
+function checkAchievement2(){
+    if ((!achievement_unlocks['a2']) && (livingHumans >= 100 * maxLivingHumans)){
+        achievement_unlocks['a2'] = true;
+        showAchievementFooterOnUnlock('Can you actually ?');
+        const a2 = document.getElementById("a2");
+        a2.src = "sprites/a2_sprite.png"
     }
 }

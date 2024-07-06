@@ -8,6 +8,9 @@ function techUpgrade(name, cost, isactive, canbuy) {
 technologies = {
     "tech-fire": new techUpgrade("Fire", 50, false, true),
     "tech-tools1": new techUpgrade("Tools 1", 100, false, false),
+    "tech-crops": new techUpgrade("Crops", 500, false, false),
+    "tech-huts": new techUpgrade("Huts", 200, false, false),
+    "tech-speech": new techUpgrade("Speech", 1000, false, false),
 }
 
 techUpgradeWindowActive = false;
@@ -28,7 +31,21 @@ function buyTechUpgrade(buttonId){
                 case "Tools 1":
                     maxLivingHumans *= 2;
                     TextBox.addText("Out of boredom, you take human form and explain to one guy " +
-                                    "how to make tools using rocks. He was very impressed.");               
+                                    "how to make tools using rocks. He was very impressed.");
+                    technologies["tech-crops"].canbuy = true;
+                    technologies["tech-huts"].canbuy = true;
+                    break;
+                case "Crops":
+                    maxLivingHumans *= 2;
+                    TextBox.addText("--PLACEHOLDER--.");
+                    break;
+                case "Huts":
+                    growthSlowdown -= 0.2;
+                    TextBox.addText("--PLACEHOLDER--.");
+                    technologies["tech-speech"].canbuy = true;
+                case "Speech":
+                    soulPointMultiplier *= 1.2;
+                    TextBox.addText("God is happy that you brought his creatures all the way to this advanced form of communication.")
                 default:
                     break;
             }
@@ -75,6 +92,9 @@ function toggleTechUpgradeWindow() {
 
 function drawAllLines() {
     drawLine("tech-fire", "tech-tools1");
+    drawLine("tech-tools1", "tech-crops");
+    drawLine("tech-tools1", "tech-huts");
+    drawLine("tech-huts", "tech-speech")
 }
 
 function drawLine(fromId, toId) {
@@ -156,7 +176,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     var startX, startY, scrollLeft, scrollTop;
 
     upgradeBody.addEventListener('mousedown', (e) => {
-        if (e.button === 2) { // Right mouse button
+        if ((e.button === 2) || (e.button === 0) ) { // Right or left mouse button
             isPanning = true;
             startX = e.clientX;
             startY = e.clientY;
@@ -171,8 +191,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
         e.preventDefault();
         const x = e.clientX;
         const y = e.clientY;
-        const walkX = (x - startX); // Calculate distance moved
-        const walkY = (y - startY); // Calculate distance moved
+        const walkX = (x - startX); 
+        const walkY = (y - startY); 
         upgradeBody.scrollLeft = scrollLeft - walkX;
         upgradeBody.scrollTop = scrollTop - walkY;
     });
