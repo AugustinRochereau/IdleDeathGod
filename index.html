@@ -41,6 +41,15 @@
             <span class="upgradeDescription">Reset souls for a boost to soul gains</span>        
         </button>
         <button class="upgradeButton" id="diseaseButton">Spread Disease<br>Cost: 1000 souls</button>
+        <div class="sliderContainer" id="worldTendancy" style="display: none;">
+            <div class="sliderTrack">
+                <div class="sliderThumb"></div>
+            </div>
+            <div class="sliderLabels">
+                <span class="sliderLabelLeft">War</span>
+                <span class="sliderLabelRight">Peace</span>
+            </div>
+        </div>
         <div id="upgradeWindow" class="upgradeWindow">
             <div class="upgradeWindowHeader">
                 <span class="closeButton" onclick="toggleTechUpgradeWindow()">×</span>
@@ -66,7 +75,10 @@
                     </button>     
                     <button class="techUpgradeTreeButton" id="tech-unlock-soul-vessels" style="left: 700px; top: 700px;" onclick="buyTechUpgrade(this.id)">Unlock Soul Vessels<br>Cost: 2000 souls
                         <span class="upgradeDescription">Vessels reset souls for a boost to soul gains</span>
-                    </button>              
+                    </button>     
+                    <button class="techUpgradeTreeButton" id="tech-unlock-world-tendancy" style="left: 500px; top: 800px;" onclick="buyTechUpgrade(this.id)">Unlock World Tendancy<br>Cost: 5000 souls
+                        <span class="upgradeDescription">Choose how peacefully the humans will live</span>
+                    </button>            
                 </div>
                 <svg id="linesContainer"></svg>
             </div>

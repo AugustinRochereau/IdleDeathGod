@@ -12,7 +12,11 @@ technologies = {
     "tech-huts": new techUpgrade("Huts", 200, false, false),
     "tech-speech": new techUpgrade("Speech", 1000, false, false),
     "tech-unlock-soul-vessels": new techUpgrade("Unlock Soul Vessels", 2000, false, false),
+    "tech-unlock-world-tendancy": new techUpgrade("World Tendancy", 5000, false, false),
 }
+
+let worldTendancyMinLifeExpectancy = 15;
+let worldTendancyMaxLifeExpectancy = 25;
 
 techUpgradeWindowActive = false;
 
@@ -38,19 +42,27 @@ function buyTechUpgrade(buttonId){
                     break;
                 case "Crops":
                     maxLivingHumans *= 2;
-                    TextBox.addText("--PLACEHOLDER--.");
+                    TextBox.addText("PLACEHOLDER_UNLOCK_CROPS.");
                     technologies["tech-unlock-soul-vessels"].canbuy = true;
                     break;
                 case "Huts":
                     growthSlowdown -= 0.2;
-                    TextBox.addText("--PLACEHOLDER--.");
+                    TextBox.addText("PLACEHOLDER_UNLOCK_HUTS.");
                     technologies["tech-speech"].canbuy = true;
+                    break;
                 case "Speech":
                     soulPointMultiplier *= 1.2;
                     TextBox.addText("God is happy that you brought his creatures all the way to this advanced form of communication.")
+                    technologies["tech-unlock-world-tendancy"].canbuy = true;
+                    break;
                 case "Unlock Soul Vessels":
                     document.getElementById("soulVessels").style.display = "block";
-                    TextBox.addText("Tinkering with the fabric of souls led to the creation of soul vessels. More souls for you")
+                    TextBox.addText("Tinkering with the fabric of souls led to the creation of soul vessels. More souls for you");
+                    break;
+                case "World Tendancy":
+                    document.getElementById("worldTendancy").style.display = "block";
+                    TextBox.addText("PLACEHOLDER_UNLOCK_WORLD_TENDANCY");
+                    break;
                 default:
                     break;
             }
@@ -100,7 +112,8 @@ function drawAllLines() {
     drawLine("tech-tools1", "tech-crops");
     drawLine("tech-tools1", "tech-huts");
     drawLine("tech-huts", "tech-speech");
-    drawLine("tech-crops", "tech-unlock-soul-vessels")
+    drawLine("tech-crops", "tech-unlock-soul-vessels");
+    drawLine("tech-speech", "tech-unlock-world-tendancy");
 }
 
 function drawLine(fromId, toId) {
@@ -222,4 +235,69 @@ document.addEventListener('DOMContentLoaded', (event) => {
     drawAllLines();
 
     updateTechButtonsDisplay();
+});
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    const sliderThumb = document.querySelector('.sliderThumb');
+    const sliderTrack = document.querySelector('.sliderTrack');
+    let isDragging = false;
+
+    sliderThumb.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('mouseup', onMouseUp);
+    });
+
+    function onMouseMove(e) {
+        if (!isDragging) return;
+
+        const trackRect = sliderTrack.getBoundingClientRect();
+        let newLeft = e.clientX - trackRect.left - (sliderThumb.offsetWidth / 2);
+
+        // Constrain the thumb within the track bounds
+        if (newLeft < 0) {
+            newLeft = 0;
+        }
+        const rightEdge = sliderTrack.offsetWidth - sliderThumb.offsetWidth;
+        if (newLeft > rightEdge) {
+            newLeft = rightEdge;
+        }
+
+        sliderThumb.style.left = newLeft + 'px';
+
+        // Calculate the slider value (0 to 1) based on the thumb position
+        const sliderValue = newLeft / rightEdge;
+
+        // Update game parameter based on sliderValue
+        updateGameParameter(sliderValue);
+    }
+
+    function onMouseUp() {
+        isDragging = false;
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+    }
+
+    function updateGameParameter(value) {
+        lifeExpectancy = worldTendancyMinLifeExpectancy + value * (worldTendancyMaxLifeExpectancy - worldTendancyMinLifeExpectancy);
+    }
+
+    // Allow clicking on the track to move the thumb
+    sliderTrack.addEventListener('click', (e) => {
+        const trackRect = sliderTrack.getBoundingClientRect();
+        let newLeft = e.clientX - trackRect.left - (sliderThumb.offsetWidth / 2);
+
+        if (newLeft < 0) {
+            newLeft = 0;
+        }
+        const rightEdge = sliderTrack.offsetWidth - sliderThumb.offsetWidth;
+        if (newLeft > rightEdge) {
+            newLeft = rightEdge;
+        }
+
+        sliderThumb.style.left = newLeft + 'px';
+
+        const sliderValue = newLeft / rightEdge;
+        updateGameParameter(sliderValue);
+    });
 });

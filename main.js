@@ -1,4 +1,4 @@
-let livingHumans = 2000000;
+let livingHumans = 2;
 let growthRate = 0.1;
 let maxLivingHumans = 100;
 let growthSlowdown = 2; // exponent 
@@ -88,16 +88,19 @@ function resetToDefaultValues() {
     tickspeed = 1;
 
     upgradeCosts = {
-        "technologyUpgrade": 50,
         "diseaseButton": 1000,
         "tickspeedUpgrade": 100,
+        "soulVessels": 1000,
     }
     
     upgradeNumbers = {
         "tickspeedUpgrade": 0,
-    }   
+        "soulVessels": 0,
+    } 
 
     document.getElementById("tickspeedUpgrade").innerHTML = "Buy Tickspeed<br>Cost: 100 souls";
+    document.getElementById("soulVessels").style.display = "none";
+    document.getElementById("worldTendancy").style.display = "none";
 
     technologies = {
         "tech-fire": new techUpgrade("Fire", 50, false, true),
@@ -106,6 +109,7 @@ function resetToDefaultValues() {
         "tech-huts": new techUpgrade("Huts", 200, false, false),
         "tech-speech": new techUpgrade("Speech", 1000, false, false),
         "tech-unlock-soul-vessels": new techUpgrade("Unlock Soul Vessels", 2000, false, false),
+        "tech-unlock-world-tendancy": new techUpgrade("World Tendancy", 5000, false, false),
     }
 
     updateTechButtonsDisplay();
@@ -120,7 +124,7 @@ function buySoulVessel(){
     if (deadSouls >= upgradeCosts["soulVessels"]){
         deadSouls = 0;
         upgradeNumbers["soulVessels"] += 1;
-        upgradeCosts["soulVessels"] *= 2;
+        upgradeCosts["soulVessels"] *= 1.5;
     }
     soulVesselsButton.innerHTML = "Next Soul Vessel: " + numberFormat(upgradeCosts["soulVessels"]) +" souls" + 
                         '<span class="upgradeDescription" style="font-size: 10px;">Reset souls for a boost to soul gains</span>'
