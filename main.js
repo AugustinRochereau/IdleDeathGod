@@ -17,7 +17,7 @@ const updatesPerSecond = 60;
 const timePerUpdate = 1000 / updatesPerSecond;
 
 
-let intervalBetweenSave = 10 * 1000;
+let intervalBetweenSave = 3 * 1000;
 
 upgradeCosts = {
     "diseaseButton": 1000,
@@ -176,8 +176,10 @@ setInterval(saveState, intervalBetweenSave);
 
 // Loading and saving
 document.addEventListener("DOMContentLoaded", loadState);
-document.addEventListener("beforeunload", saveState);
 
+
+document.onbeforeunload = saveState;
+document.addEventListener("beforeunload", saveState);
 
 document.addEventListener("DOMContentLoaded", setGameActions);
 
