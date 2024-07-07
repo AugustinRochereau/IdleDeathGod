@@ -28,8 +28,8 @@ function gameState(
   }
   this.upgradeNumbers = 
   {
-      "tickspeedUpgrade" : upgradeNumbers["tickspeedUpgrade"]
-      "soulVessels" : upgradeNumbers["soulVessels"];
+      "tickspeedUpgrade" : upgradeNumbers["tickspeedUpgrade"],
+      "soulVessels" : upgradeNumbers["soulVessels"]
   }
 }
 

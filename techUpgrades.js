@@ -26,19 +26,17 @@ function updateTechDependencies()
 {
   for(var key in technologies)
   {
-    var bon = true;
+    var buyable = true;
     for(pId of technologies[key].parents)
     {
+      console.log("%s <- %s : %s", key, pId, !technologies[pId].isactive)
       if(!technologies[pId].isactive) 
       {
-        bon = false;
+        buyable = false;
         break;
       }
     }
-    if(bon)
-    {
-      technologies[key].canbuy = true;
-    }
+    technologies[key].canbuy = buyable;
     if(technologies[key].isactive)
     {
       technologies[key].canbuy = false;

@@ -102,15 +102,21 @@ function resetToDefaultValues() {
     document.getElementById("soulVessels").style.display = "none";
     document.getElementById("worldTendancy").style.display = "none";
 
-    technologies = {
-        "tech-fire": new techUpgrade("Fire", 50, false, true),
-        "tech-tools1": new techUpgrade("Tools 1", 100, false, false),
-        "tech-crops": new techUpgrade("Crops", 500, false, false),
-        "tech-huts": new techUpgrade("Huts", 200, false, false),
-        "tech-speech": new techUpgrade("Speech", 1000, false, false),
-        "tech-unlock-soul-vessels": new techUpgrade("Unlock Soul Vessels", 2000, false, false),
-        "tech-unlock-world-tendancy": new techUpgrade("World Tendancy", 5000, false, false),
+    //technologies = {
+    //    "tech-fire": new techUpgrade("Fire", 50, false, true),
+    //    "tech-tools1": new techUpgrade("Tools 1", 100, false, false),
+    //    "tech-crops": new techUpgrade("Crops", 500, false, false),
+    //    "tech-huts": new techUpgrade("Huts", 200, false, false),
+    //    "tech-speech": new techUpgrade("Speech", 1000, false, false),
+    //    "tech-unlock-soul-vessels": new techUpgrade("Unlock Soul Vessels", 2000, false, false),
+    //    "tech-unlock-world-tendancy": new techUpgrade("World Tendancy", 5000, false, false),
+    //}
+  //
+    for(var id in technologies)
+    {
+      technologies[id].isactive = false;
     }
+    updateTechDependencies();
 
     updateTechButtonsDisplay();
 }
