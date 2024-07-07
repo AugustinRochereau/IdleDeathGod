@@ -3,7 +3,7 @@ let growthRate = 0.1;
 let maxLivingHumans = 100;
 let growthSlowdown = 2; // exponent 
 let deathRate = 0;
-let deadSouls = 0;
+let deadSouls = 50;
 let mortalRealmNumber = 1;
 let lifeExpectancy = 20;
 let years = 0;
@@ -162,6 +162,7 @@ function statisticsDisplay() {
                         "<span class='godText'> You have " + floatNumberFormat(soulPoints) + " soul points, boosting growth rate by " + floatNumberFormat(soulPoints + 1) +"</span></span>";
 }
 
+//loadState();
 setInterval(updatePopulation, timePerUpdate);
 
 document.addEventListener("DOMContentLoaded", setGameActions);
