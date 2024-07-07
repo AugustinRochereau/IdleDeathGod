@@ -1,19 +1,51 @@
-function techUpgrade(name, cost, isactive, canbuy, parents) {
+function techUpgrade(name, cost, isactive, canbuy, parents, upgradetype,buyfunction) {
     this.name = name;
     this.cost = cost;
     this.isactive = isactive;
     this.canbuy = canbuy;
     this.parents = parents;
+    this.buyfunction = buyfunction;
+    this.upgradetype = upgradetype; // 0 for growth upgrade -- 1 for major unlock
 }
 
 technologies = {
-    "tech-fire": new techUpgrade("Fire", 50, false, true, []),
-    "tech-tools1": new techUpgrade("Tools 1", 100, false, false, ["tech-fire"]),
-    "tech-crops": new techUpgrade("Crops", 500, false, false, ["tech-tools1"]),
-    "tech-huts": new techUpgrade("Huts", 200, false, false, ["tech-tools1"]),
-    "tech-speech": new techUpgrade("Speech", 1000, false, false, ["tech-huts"]),
-    "tech-unlock-soul-vessels": new techUpgrade("Unlock Soul Vessels", 2000, false, false, ["tech-crops"]),
-    "tech-unlock-world-tendancy": new techUpgrade("World Tendancy", 5000, false, false, ["tech-speech"]),
+    "tech-fire": new techUpgrade("Fire", 50, false, true, [], 0,
+     function () {
+      maxLivingHumans*=2;
+      TextBox.addText("You bring humans fire. It helps them survive.");
+     }),
+    "tech-tools1": new techUpgrade("Tools 1", 100, false, false, ["tech-fire"], 0,
+    function () {
+      maxLivingHumans*=2;
+      TextBox.addText("Out of boredom, you take human form and explain to one guy " +
+                      "how to make tools using rocks. He was very impressed.");
+    }),
+    "tech-crops": new techUpgrade("Crops", 500, false, false, ["tech-tools1"], 0,
+    function() {
+      maxLivingHumans*=2;
+      TextBox.addText("PLACEHOLDER_UNLOCK_CROPS.");
+    }),
+    "tech-huts": new techUpgrade("Huts", 200, false, false, ["tech-tools1"], 0,
+    function() {
+      growthSlowdown -= 0.2;
+      TextBox.addText("PLACEHOLDER_UNLOCK_HUTS.");
+    }),
+    "tech-speech": new techUpgrade("Speech", 1000, false, false, ["tech-huts"], 0,
+    function() {
+      soulPointMultiplier *= 1.2;
+      TextBox.addText("God is happy that you brought his creatures all the way to this advanced form of communication.")
+    }),
+    "tech-unlock-soul-vessels": new techUpgrade("Unlock Soul Vessels", 2000, false, false, ["tech-crops"], 1,
+    function() {
+      document.getElementById("soulVessels").style.display = "block";
+      TextBox.addText("Tinkering with the fabric of souls led to the creation of soul vessels. More souls for you");
+    }),
+    "tech-unlock-world-tendancy": new techUpgrade("World Tendancy", 5000, false, false, ["tech-speech"], 1,
+    function(){
+      document.getElementById("worldTendancy").style.display = "block";
+      TextBox.addText("PLACEHOLDER_UNLOCK_WORLD_TENDANCY");
+    }),
+
 }
 
 let worldTendancyMinLifeExpectancy = 15;
@@ -50,42 +82,7 @@ function buyTechUpgrade(buttonId){
             deadSouls -= upgrade.cost;
             upgrade.isactive = true;
             upgrade.canbuy = false;
-            switch (upgrade.name){
-                case "Fire":
-                    maxLivingHumans *= 2;
-                    TextBox.addText("You bring humans fire. It helps them survive.");
-                    break;
-                case "Tools 1":
-                    maxLivingHumans *= 2;
-                    TextBox.addText("Out of boredom, you take human form and explain to one guy " +
-                                    "how to make tools using rocks. He was very impressed.");
-                    break;
-                case "Crops":
-                    maxLivingHumans *= 2;
-                    TextBox.addText("PLACEHOLDER_UNLOCK_CROPS.");
-                    technologies["tech-unlock-soul-vessels"].canbuy = true;
-                    break;
-                case "Huts":
-                    growthSlowdown -= 0.2;
-                    TextBox.addText("PLACEHOLDER_UNLOCK_HUTS.");
-                    technologies["tech-speech"].canbuy = true;
-                    break;
-                case "Speech":
-                    soulPointMultiplier *= 1.2;
-                    TextBox.addText("God is happy that you brought his creatures all the way to this advanced form of communication.")
-                    technologies["tech-unlock-world-tendancy"].canbuy = true;
-                    break;
-                case "Unlock Soul Vessels":
-                    document.getElementById("soulVessels").style.display = "block";
-                    TextBox.addText("Tinkering with the fabric of souls led to the creation of soul vessels. More souls for you");
-                    break;
-                case "World Tendancy":
-                    document.getElementById("worldTendancy").style.display = "block";
-                    TextBox.addText("PLACEHOLDER_UNLOCK_WORLD_TENDANCY");
-                    break;
-                default:
-                    break;
-            }
+            upgrade.buyfunction();
         }
     }
     updateTechDependencies();
