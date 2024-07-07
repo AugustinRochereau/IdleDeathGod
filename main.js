@@ -85,7 +85,7 @@ function resetToDefaultValues() {
     maxLivingHumans = 100;
     growthSlowdown = 2; // exponent 
     deathRate = 0;
-    deadSouls = 0;
+    deadSouls = 500;
     lifeExpectancy = 20;
     years = 0;
     tickspeed = 1;

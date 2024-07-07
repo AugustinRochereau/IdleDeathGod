@@ -8,7 +8,7 @@ function saveState()
   let techTree = {};
   for(const [key, value] of Object.entries(technologies))
   {
-    techTree["key"] = value.isactive;
+    techTree[key] = value.isactive;
   }
 
   const stateData = {
@@ -74,5 +74,6 @@ function loadState()
     }
 
     updateTechDependencies();
+    updateTechButtonsDisplay();
   }
 }
