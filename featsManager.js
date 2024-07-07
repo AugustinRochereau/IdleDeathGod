@@ -8,10 +8,11 @@ achievement_names = {
     'a2': "Can you actually ?"
 }
 
-achievement_unlocks = {
-    'a1': false,
-    'a2': false,
-}
+// achievement_unlocks = {
+//    'a1': false,
+//    'a2': false,
+// }
+// Moved to gameVars
 
 function getAchievementDescription(achievementId) {
     return achievements_descriptions[achievementId];
@@ -47,9 +48,22 @@ function hideAchievementDescription() {
     document.getElementById("achievementPopup").style.display = "none";
 }
 
+
+function updateAchievement()
+{
+  for (var [achievement_id, unlocked] of Object.entries(gV.achievement_unlocks))
+  {
+    if(unlocked)
+    {
+      const aid = document.getElementById(achievement_id);
+      aid.src = "sprites/" + achievement_id + "_sprite.png";
+    }
+  }
+}
+
 function checkAchievement1(){
-    if ((!achievement_unlocks['a1']) && (Math.floor(livingHumans) == 0) && (deadSouls < 6)) {
-        achievement_unlocks['a1'] = true;
+    if ((!gV.achievement_unlocks['a1']) && (Math.floor(gV.livingHumans) == 0) && (gV.deadSouls < 6)) {
+        gV.achievement_unlocks['a1'] = true;
         showAchievementFooterOnUnlock('Not a chance for the living');
         const a1 = document.getElementById("a1");
         a1.src = "sprites/a1_sprite.png";
@@ -57,8 +71,8 @@ function checkAchievement1(){
 }
 
 function checkAchievement2(){
-    if ((!achievement_unlocks['a2']) && (livingHumans >= 100 * maxLivingHumans)){
-        achievement_unlocks['a2'] = true;
+    if ((!gV.achievement_unlocks['a2']) && (gV.livingHumans >= 100 * gV.maxLivingHumans)){
+        gV.achievement_unlocks['a2'] = true;
         showAchievementFooterOnUnlock('Can you actually ?');
         const a2 = document.getElementById("a2");
         a2.src = "sprites/a2_sprite.png"

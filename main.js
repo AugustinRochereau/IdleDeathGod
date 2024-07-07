@@ -1,36 +1,47 @@
-let livingHumans = 2;
-let growthRate = 0.1;
-let maxLivingHumans = 100;
-let growthSlowdown = 2; // exponent 
-let deathRate = 0;
-let deadSouls = 0;
-let mortalRealmNumber = 1;
-let lifeExpectancy = 20;
-let years = 0;
-let tickspeed = 1;
-let soulPoints = 0;
-let maxGrowthAffect = 0.1;
-let soulPointMultiplier = 1;
+//let livingHumans = 2;
+//let growthRate = 0.1;
+//let maxLivingHumans = 100;
+//let growthSlowdown = 2; // exponent 
+//let deathRate = 0;
+//let deadSouls = 0;
+//let mortalRealmNumber = 1;
+//let lifeExpectancy = 20;
+//let years = 0;
+//let tickspeed = 1;
+//let soulPoints = 0;
+//let maxGrowthAffect = 0.1;
+//let soulPointMultiplier = 1;
 
 let lastUpdateTime = 0;
 const updatesPerSecond = 60;
 const timePerUpdate = 1000 / updatesPerSecond;
-
-
 let intervalBetweenSave = 3 * 1000;
 
-upgradeCosts = {
-    "diseaseButton": 1000,
-    "tickspeedUpgrade": 100,
-    "soulVessels": 1000,
-}
-
-upgradeNumbers = {
-    "tickspeedUpgrade": 0,
-    "soulVessels": 0,
-}
+//upgradeCosts = {
+//    "diseaseButton": 1000,
+//    "tickspeedUpgrade": 100,
+//    "soulVessels": 1000,
+//}
+//
+//upgradeNumbers = {
+//    "tickspeedUpgrade": 0,
+//    "soulVessels": 0,
+//}
 
 function updatePopulation() {
+    
+    let livingHumans = gV.livingHumans;
+    let growthRate = gV.growthRate;
+    let maxLivingHumans = gV.maxLivingHumans;
+    let growthSlowdown = gV.growthSlowdown; // exponent 
+    let deathRate = gV.deathRate;
+    let deadSouls = gV.deadSouls;
+    let lifeExpectancy = gV.lifeExpectancy;
+    let years = gV.years;
+    let tickspeed = gV.tickspeed;
+    let soulPoints = gV.soulPoints;
+    let maxGrowthAffect = gV.maxGrowthAffect;
+
     const currentTime = performance.now();
     const deltaTime = currentTime - lastUpdateTime;
 
@@ -43,7 +54,7 @@ function updatePopulation() {
         let growth = (soulPoints + 1) * growthRate * livingHumans * (1 - livingHumans / Math.max(maxLivingHumans, livingHumans + 20)) ** growthSlowdown * deltaTime * tickspeed / 1000;
         let deaths = deathRate * livingHumans * deltaTime * tickspeed / 1000;
         livingHumans += growth * (1 + randomGrowthAffect) - deaths;
-        deadSouls += (upgradeNumbers["soulVessels"] + 1) * deaths;
+        deadSouls += (gV.upgradeNumbers["soulVessels"] + 1) * deaths;
         lastUpdateTime = currentTime;
         years += deltaTime * tickspeed / 1000;
     }
@@ -65,38 +76,38 @@ function displayMortalRealmResetScreen(){
     const screen = document.getElementById("mortalRealmReset");
     const text = document.getElementById("mortalRealmResetText");
     screen.style.display = "block";
-    let soulPointsGain = (Math.max(0, Math.log10(deadSouls) * soulPointMultiplier - soulPoints));
-    text.innerHTML = "<span style='font-size: 25px;'>You are entering mortal realm " + numberFormat(mortalRealmNumber) + ".</span><br>" + 
-                        "<span class='godText'>You led the humans for " + floatNumberFormat(years) + " years.<br>" +
+    let soulPointsGain = (Math.max(0, Math.log10(gV.deadSouls) * gV.soulPointMultiplier - gV.soulPoints));
+    text.innerHTML = "<span style='font-size: 25px;'>You are entering mortal realm " + numberFormat(gV.mortalRealmNumber) + ".</span><br>" + 
+                        "<span class='godText'>You led the humans for " + floatNumberFormat(gV.years) + " years.<br>" +
                         "For the souls you've watched over, I'll give you " + floatNumberFormat(soulPointsGain) + 
                         " soul points.</span><br>Click anywhere to continue...";
 
     screen.addEventListener("click", hideMortalRealmResetScreen);
 
-    soulPoints += soulPointsGain;
-    mortalRealmNumber += 1;
+    gV.soulPoints += soulPointsGain;
+    gV.mortalRealmNumber += 1;
     resetToDefaultValues();
     displayCounters();
 }
 
 function resetToDefaultValues() {
-    livingHumans = 2;
-    growthRate = 0.1;
-    maxLivingHumans = 100;
-    growthSlowdown = 2; // exponent 
-    deathRate = 0;
-    deadSouls = 0;
-    lifeExpectancy = 20;
-    years = 0;
-    tickspeed = 1;
+    gV.livingHumans = 2;
+    gV.growthRate = 0.1;
+    gV.maxLivingHumans = 100;
+    gV.growthSlowdown = 2; // exponent 
+    gV.deathRate = 0;
+    gV.deadSouls = 0;
+    gV.lifeExpectancy = 20;
+    gV.years = 0;
+    gV.tickspeed = 1;
 
-    upgradeCosts = {
+    gV.upgradeCosts = {
         "diseaseButton": 1000,
         "tickspeedUpgrade": 100,
         "soulVessels": 1000,
     }
     
-    upgradeNumbers = {
+    gV.upgradeNumbers = {
         "tickspeedUpgrade": 0,
         "soulVessels": 0,
     } 
@@ -130,18 +141,18 @@ function hideMortalRealmResetScreen(){
 
 function buySoulVessel(){
     const soulVesselsButton = document.getElementById("soulVessels");
-    if (deadSouls >= upgradeCosts["soulVessels"]){
-        deadSouls = 0;
-        upgradeNumbers["soulVessels"] += 1;
-        upgradeCosts["soulVessels"] *= 1.5;
+    if (gV.deadSouls >= gV.upgradeCosts["soulVessels"]){
+        gV.deadSouls = 0;
+        gV.upgradeNumbers["soulVessels"] += 1;
+        gV.upgradeCosts["soulVessels"] *= 1.5;
     }
-    soulVesselsButton.innerHTML = "Next Soul Vessel: " + numberFormat(upgradeCosts["soulVessels"]) +" souls" + 
+    soulVesselsButton.innerHTML = "Next Soul Vessel: " + numberFormat(gV.upgradeCosts["soulVessels"]) +" souls" + 
                         '<span class="upgradeDescription" style="font-size: 10px;">Reset souls for a boost to soul gains</span>'
 }
 
 function displayCounters() {
-    hCounter = Math.floor(livingHumans);
-    sCounter = Math.floor(deadSouls);
+    hCounter = Math.floor(gV.livingHumans);
+    sCounter = Math.floor(gV.deadSouls);
 
     document.getElementById('living-humans').innerHTML = `Living Humans:<br> <b>${numberFormat(hCounter)}</b>`;
     document.getElementById('dead-souls').innerHTML = `Souls:<br> <b>${numberFormat(sCounter)}</b>`;
@@ -165,10 +176,10 @@ function floatNumberFormat(x) {
 
 function statisticsDisplay() {
     document.getElementById("statisticsDisplay").innerHTML = 'You are in mortal realm number ' + 
-                        mortalRealmNumber + '.<br><span style="font-size: 12px;">It is year '+ Math.floor(years) + 
-                        ', tickspeed is ' + floatNumberFormat(tickspeed) +'<br>Human life expectancy: ' + 
-                        Math.floor(lifeExpectancy) + ' years.<br>Death rate: ' + deathRate.toExponential(2) + ".<br>" + 
-                        "<span class='godText'> You have " + floatNumberFormat(soulPoints) + " soul points, boosting growth rate by " + floatNumberFormat(soulPoints + 1) +"</span></span>";
+                        gV.mortalRealmNumber + '.<br><span style="font-size: 12px;">It is year '+ Math.floor(gV.years) + 
+                        ', tickspeed is ' + floatNumberFormat(gV.tickspeed) +'<br>Human life expectancy: ' + 
+                        Math.floor(gV.lifeExpectancy) + ' years.<br>Death rate: ' + gV.deathRate.toExponential(2) + ".<br>" + 
+                        "<span class='godText'> You have " + floatNumberFormat(gV.soulPoints) + " soul points, boosting growth rate by " + floatNumberFormat(gV.soulPoints + 1) +"</span></span>";
 }
 
 setInterval(updatePopulation, timePerUpdate);
@@ -186,10 +197,10 @@ document.addEventListener("DOMContentLoaded", setGameActions);
 
 function setGameActions() {
     document.getElementById("killHumanButton").addEventListener("click", function() {
-        if (livingHumans >= 1){
-            livingHumans -= 1;
+        if (gV.livingHumans >= 1){
+            gV.livingHumans -= 1;
       
-            deadSouls += 1;
+            gV.deadSouls += 1;
         
             displayCounters();
         } else {
@@ -200,24 +211,24 @@ function setGameActions() {
 
     document.getElementById("tickspeedUpgrade").addEventListener("click", function() {
         upgradeButton = document.getElementById("tickspeedUpgrade");
-        let upgradeCost = upgradeCosts["tickspeedUpgrade"];
+        let upgradeCost = gV.upgradeCosts["tickspeedUpgrade"];
 
-        if (upgradeCost <= deadSouls) {
-            deadSouls -= upgradeCost
-            tickspeed *= 1.05;
-            upgradeCosts["tickspeedUpgrade"] *= 1.1;
-            upgradeNumbers["tickspeedUpgrade"] += 1;
-            upgradeButton.innerHTML = "Buy Tickspeed<br>Cost: " + upgradeCosts["tickspeedUpgrade"].toFixed(2) + " souls";
+        if (upgradeCost <= gV.deadSouls) {
+            gV.deadSouls -= upgradeCost
+            gV.tickspeed *= 1.05;
+            gV.upgradeCosts["tickspeedUpgrade"] *= 1.1;
+            gV.upgradeNumbers["tickspeedUpgrade"] += 1;
+            upgradeButton.innerHTML = "Buy Tickspeed<br>Cost: " + gV.upgradeCosts["tickspeedUpgrade"].toFixed(2) + " souls";
         }
     });
 
     document.getElementById("diseaseButton").addEventListener("click", function() {
 
-        if (deadSouls >= 1000) {
-            deadSouls -= 1000;
-            let sick = livingHumans * 0.95;
-            livingHumans -= sick;
-            deadSouls += sick;
+        if (gV.deadSouls >= 1000) {
+            gV.deadSouls -= 1000;
+            let sick = gV.livingHumans * 0.95;
+            gV.livingHumans -= sick;
+            gV.deadSouls += sick;
             TextBox.addText("You inflict a ferocious disease to the humans, effectively killing 95% of them.")
         }
         displayCounters();

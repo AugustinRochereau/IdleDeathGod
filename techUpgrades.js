@@ -11,28 +11,28 @@ function techUpgrade(name, cost, isactive, canbuy, parents, upgradetype,buyfunct
 technologies = {
     "tech-fire": new techUpgrade("Fire", 50, false, true, [], 0,
      function () {
-      maxLivingHumans*=2;
+      gV.maxLivingHumans*=2;
       TextBox.addText("You bring humans fire. It helps them survive.");
      }),
     "tech-tools1": new techUpgrade("Tools 1", 100, false, false, ["tech-fire"], 0,
     function () {
-      maxLivingHumans*=2;
+      gV.maxLivingHumans*=2;
       TextBox.addText("Out of boredom, you take human form and explain to one guy " +
                       "how to make tools using rocks. He was very impressed.");
     }),
     "tech-crops": new techUpgrade("Crops", 500, false, false, ["tech-tools1"], 0,
     function() {
-      maxLivingHumans*=2;
+      gV.maxLivingHumans*=2;
       TextBox.addText("PLACEHOLDER_UNLOCK_CROPS.");
     }),
     "tech-huts": new techUpgrade("Huts", 200, false, false, ["tech-tools1"], 0,
     function() {
-      growthSlowdown -= 0.2;
+      gV.growthSlowdown -= 0.2;
       TextBox.addText("PLACEHOLDER_UNLOCK_HUTS.");
     }),
     "tech-speech": new techUpgrade("Speech", 1000, false, false, ["tech-huts"], 0,
     function() {
-      soulPointMultiplier *= 1.2;
+      gV.soulPointMultiplier *= 1.2;
       TextBox.addText("God is happy that you brought his creatures all the way to this advanced form of communication.")
     }),
     "tech-unlock-soul-vessels": new techUpgrade("Unlock Soul Vessels", 2000, false, false, ["tech-crops"], 1,
@@ -48,8 +48,8 @@ technologies = {
 
 }
 
-let worldTendancyMinLifeExpectancy = 15;
-let worldTendancyMaxLifeExpectancy = 25;
+// let worldTendancyMinLifeExpectancy = 15;
+// let worldTendancyMaxLifeExpectancy = 25;
 
 techUpgradeWindowActive = false;
 
@@ -78,8 +78,8 @@ function updateTechDependencies()
 function buyTechUpgrade(buttonId){
     upgrade = technologies[buttonId];
     if(upgrade.canbuy)  {
-        if (deadSouls >= upgrade.cost) {
-            deadSouls -= upgrade.cost;
+        if (gV.deadSouls >= upgrade.cost) {
+            gV.deadSouls -= upgrade.cost;
             upgrade.isactive = true;
             upgrade.canbuy = false;
             upgrade.buyfunction();
@@ -305,7 +305,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     }
 
     function updateGameParameter(value) {
-        lifeExpectancy = worldTendancyMinLifeExpectancy + value * (worldTendancyMaxLifeExpectancy - worldTendancyMinLifeExpectancy);
+        lifeExpectancy = gV.worldTendancyMinLifeExpectancy + value * (gV.worldTendancyMaxLifeExpectancy - gV.worldTendancyMinLifeExpectancy);
     }
 
     // Allow clicking on the track to move the thumb
