@@ -29,7 +29,6 @@ function updateTechDependencies()
     var buyable = true;
     for(pId of technologies[key].parents)
     {
-      console.log("%s <- %s : %s", key, pId, !technologies[pId].isactive)
       if(!technologies[pId].isactive) 
       {
         buyable = false;

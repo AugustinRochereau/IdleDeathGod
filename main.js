@@ -3,7 +3,7 @@ let growthRate = 0.1;
 let maxLivingHumans = 100;
 let growthSlowdown = 2; // exponent 
 let deathRate = 0;
-let deadSouls = 50;
+let deadSouls = 0;
 let mortalRealmNumber = 1;
 let lifeExpectancy = 20;
 let years = 0;
@@ -15,6 +15,9 @@ let soulPointMultiplier = 1;
 let lastUpdateTime = 0;
 const updatesPerSecond = 60;
 const timePerUpdate = 1000 / updatesPerSecond;
+
+
+let intervalBetweenSave = 10 * 1000;
 
 upgradeCosts = {
     "diseaseButton": 1000,
@@ -168,10 +171,16 @@ function statisticsDisplay() {
                         "<span class='godText'> You have " + floatNumberFormat(soulPoints) + " soul points, boosting growth rate by " + floatNumberFormat(soulPoints + 1) +"</span></span>";
 }
 
-//loadState();
 setInterval(updatePopulation, timePerUpdate);
+setInterval(saveState, intervalBetweenSave);
+
+// Loading and saving
+document.addEventListener("DOMContentLoaded", loadState);
+document.addEventListener("beforeunload", saveState);
+
 
 document.addEventListener("DOMContentLoaded", setGameActions);
+
 
 function setGameActions() {
     document.getElementById("killHumanButton").addEventListener("click", function() {
@@ -226,3 +235,4 @@ function setGameActions() {
         }
     }); 
 }
+
