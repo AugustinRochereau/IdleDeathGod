@@ -15,6 +15,10 @@ let gV = // Game Vars
   maxGrowthAffect: 0.1,
   soulPointMultiplier: 1,
 
+
+  // Time related variables
+  lastUpdateTime : 0,
+
   // World Tendancy variables 
 
   worldTendancyMinLifeExpectancy : 15,
@@ -35,7 +39,8 @@ let gV = // Game Vars
   achievement_unlocks : {
       'a1': false,
       'a2': false,
-  }
+  },
+  
 
 
 };

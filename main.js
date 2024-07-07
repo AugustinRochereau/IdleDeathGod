@@ -12,10 +12,10 @@
 //let maxGrowthAffect = 0.1;
 //let soulPointMultiplier = 1;
 
-let lastUpdateTime = 0;
+//let lastUpdateTime = 0;
 const updatesPerSecond = 60;
 const timePerUpdate = 1000 / updatesPerSecond;
-let intervalBetweenSave = 3 * 1000;
+const intervalBetweenSave = 3 * 1000;
 
 //upgradeCosts = {
 //    "diseaseButton": 1000,
@@ -30,38 +30,27 @@ let intervalBetweenSave = 3 * 1000;
 
 function updatePopulation() {
     
-    let livingHumans = gV.livingHumans;
-    let growthRate = gV.growthRate;
-    let maxLivingHumans = gV.maxLivingHumans;
-    let growthSlowdown = gV.growthSlowdown; // exponent 
-    let deathRate = gV.deathRate;
-    let deadSouls = gV.deadSouls;
-    let lifeExpectancy = gV.lifeExpectancy;
-    let years = gV.years;
-    let tickspeed = gV.tickspeed;
-    let soulPoints = gV.soulPoints;
-    let maxGrowthAffect = gV.maxGrowthAffect;
-
     const currentTime = performance.now();
-    const deltaTime = currentTime - lastUpdateTime;
+    const deltaTime = currentTime - gV.lastUpdateTime;
 
-    let randomGrowthAffect = (Math.random() * 2 - 1) * maxGrowthAffect;
-
+    let randomGrowthAffect = (Math.random() * 2 - 1) * gV.maxGrowthAffect;
     if (deltaTime >= timePerUpdate) {
-
-        deathRate = 1 / (lifeExpectancy);
-
-        let growth = (soulPoints + 1) * growthRate * livingHumans * (1 - livingHumans / Math.max(maxLivingHumans, livingHumans + 20)) ** growthSlowdown * deltaTime * tickspeed / 1000;
-        let deaths = deathRate * livingHumans * deltaTime * tickspeed / 1000;
-        livingHumans += growth * (1 + randomGrowthAffect) - deaths;
-        deadSouls += (gV.upgradeNumbers["soulVessels"] + 1) * deaths;
-        lastUpdateTime = currentTime;
-        years += deltaTime * tickspeed / 1000;
+        //console.log("Before %s", gV.livingHumans);
+        gV.deathRate = 1 / (gV.lifeExpectancy);
+        
+        let growth = (gV.soulPoints + 1) * gV.growthRate * gV.livingHumans * (1 - gV.livingHumans / Math.max(gV.maxLivingHumans, gV.livingHumans + 20)) ** gV.growthSlowdown * deltaTime * gV.tickspeed / 1000;
+        let deaths = gV.deathRate * gV.livingHumans * deltaTime * gV.tickspeed / 1000;
+        //console.log("%s %s %s", growth, randomGrowthAffect, deaths);
+        gV.livingHumans += growth * (1 + randomGrowthAffect) - deaths;
+        gV.deadSouls += (gV.upgradeNumbers["soulVessels"] + 1) * deaths;
+        gV.lastUpdateTime = currentTime;
+        gV.years += deltaTime * gV.tickspeed / 1000;
+        //console.log("After %s", gV.livingHumans);
     }
-    if (Math.floor(livingHumans) <= 0){
+    if (Math.floor(gV.livingHumans) <= 0){
         checkAchievement1();
         nextMortalRealm();
-    } else if (Math.floor(livingHumans) >= maxLivingHumans){
+    } else if (Math.floor(gV.livingHumans) >= gV.maxLivingHumans){
         checkAchievement2();
     }
     displayCounters();

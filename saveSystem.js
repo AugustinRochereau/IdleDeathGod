@@ -28,6 +28,7 @@ function loadState()
   if(!gameStateCookie)
   {
     // Pas de cookie  
+    console.log("No Save cookie to load");
     resetToDefaultValues(); 
   }
   else
