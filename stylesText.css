@@ -18,13 +18,20 @@
         transform: translateY(0);
     }
     25% {
-        transform: translateY(-3px);
+        transform: translateY(-2px);
+    }
+    33% {
+        transform: translateX(1px);
     }
     50% {
         transform: translateY(0);
+        transform: translateX(0);
+    }
+    66% {
+        transform: translateX(-1px);
     }
     75% {
-        transform: translateY(3px);
+        transform: translateY(2px);
     }
     100% {
         transform: translateY(0);
