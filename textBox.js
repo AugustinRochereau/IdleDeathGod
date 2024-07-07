@@ -12,11 +12,6 @@ const TextBox = {
     init: function(containerId) {
         this.textContainer = document.getElementById(containerId);
         this.typeText();
-        this.addText("TEST OBJECT LINE 15 A very short time after the creation of the humans, God got very quickly bored of them. Instead of supervising them, he creates a new entity, deep below the mortal re al m", speaker='God');
-        this.addText("TEST OBJECT LINE 15  A very short time after the creation of the humans, God got very quickly bored of them. Instead of supervising them, he creates a new entity, deep below the mortal r ealm", speaker='God');
-        this.addText("TEST OBJECT LINE 15   A very short time after the creation of the humans, God got very quickly bored of them. Instead of supervising them, he creates a new entity, deep below the mortal realm", speaker='God');
-      
-
         this.addText("A very short time after the creation of the humans, God got very quickly bored of them. Instead of supervising them, he creates a new entity, deep below the mortal realm");
         this.addText("...  ... You.");
         this.addText("Watch over the mortals, my creation. I have more important matters to attend. You are in charge of the upper as the below realm, do as you will, but try to keep them going.", 'God');
