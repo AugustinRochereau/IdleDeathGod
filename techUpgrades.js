@@ -1,24 +1,50 @@
-function techUpgrade(name, cost, isactive, canbuy) {
+function techUpgrade(name, cost, isactive, canbuy, parents) {
     this.name = name;
     this.cost = cost;
     this.isactive = isactive;
     this.canbuy = canbuy;
+    this.parents = parents;
 }
 
 technologies = {
-    "tech-fire": new techUpgrade("Fire", 50, false, true),
-    "tech-tools1": new techUpgrade("Tools 1", 100, false, false),
-    "tech-crops": new techUpgrade("Crops", 500, false, false),
-    "tech-huts": new techUpgrade("Huts", 200, false, false),
-    "tech-speech": new techUpgrade("Speech", 1000, false, false),
-    "tech-unlock-soul-vessels": new techUpgrade("Unlock Soul Vessels", 2000, false, false),
-    "tech-unlock-world-tendancy": new techUpgrade("World Tendancy", 5000, false, false),
+    "tech-fire": new techUpgrade("Fire", 50, false, true, []),
+    "tech-tools1": new techUpgrade("Tools 1", 100, false, false, ["tech-fire"]),
+    "tech-crops": new techUpgrade("Crops", 500, false, false, ["tech-tools1"]),
+    "tech-huts": new techUpgrade("Huts", 200, false, false, ["tech-tools1"]),
+    "tech-speech": new techUpgrade("Speech", 1000, false, false, ["tech-huts"]),
+    "tech-unlock-soul-vessels": new techUpgrade("Unlock Soul Vessels", 2000, false, false, ["tech-crops"]),
+    "tech-unlock-world-tendancy": new techUpgrade("World Tendancy", 5000, false, false, ["tech-speech"]),
 }
 
 let worldTendancyMinLifeExpectancy = 15;
 let worldTendancyMaxLifeExpectancy = 25;
 
 techUpgradeWindowActive = false;
+
+
+function updateTechDependencies()
+{
+  for(var key in technologies)
+  {
+    var bon = true;
+    for(pId of technologies[key].parents)
+    {
+      if(!technologies[pId].isactive) 
+      {
+        bon = false;
+        break;
+      }
+    }
+    if(bon)
+    {
+      technologies[key].canbuy = true;
+    }
+    if(technologies[key].isactive)
+    {
+      technologies[key].canbuy = false;
+    }
+  }
+}
 
 function buyTechUpgrade(buttonId){
     upgrade = technologies[buttonId];
@@ -31,14 +57,11 @@ function buyTechUpgrade(buttonId){
                 case "Fire":
                     maxLivingHumans *= 2;
                     TextBox.addText("You bring humans fire. It helps them survive.");
-                    technologies["tech-tools1"].canbuy = true;
                     break;
                 case "Tools 1":
                     maxLivingHumans *= 2;
                     TextBox.addText("Out of boredom, you take human form and explain to one guy " +
                                     "how to make tools using rocks. He was very impressed.");
-                    technologies["tech-crops"].canbuy = true;
-                    technologies["tech-huts"].canbuy = true;
                     break;
                 case "Crops":
                     maxLivingHumans *= 2;
@@ -68,6 +91,7 @@ function buyTechUpgrade(buttonId){
             }
         }
     }
+    updateTechDependencies();
     updateTechButtonsDisplay();
 }
 
@@ -108,17 +132,25 @@ function toggleTechUpgradeWindow() {
 }
 
 function drawAllLines() {
-    drawLine("tech-fire", "tech-tools1");
-    drawLine("tech-tools1", "tech-crops");
-    drawLine("tech-tools1", "tech-huts");
-    drawLine("tech-huts", "tech-speech");
-    drawLine("tech-crops", "tech-unlock-soul-vessels");
-    drawLine("tech-speech", "tech-unlock-world-tendancy");
+    // TODO change with the new parents feature
+    for(var id in technologies)
+    {
+      for(var pId of technologies[id].parents)
+      {
+        drawLine(id, pId);
+      }
+    }
+    //drawLine("tech-fire", "tech-tools1");
+    //drawLine("tech-tools1", "tech-crops");
+    //drawLine("tech-tools1", "tech-huts");
+    //drawLine("tech-huts", "tech-speech");
+    //drawLine("tech-crops", "tech-unlock-soul-vessels");
+    //drawLine("tech-speech", "tech-unlock-world-tendancy");
 }
 
 function drawLine(fromId, toId) {
     var fromElement = document.getElementById(fromId);
-    var toElement=document.getElementById(toId);
+    var toElement= document.getElementById(toId);
     var linesContainer=document.getElementById('linesContainer');
 
     var fromRect = fromElement.style;

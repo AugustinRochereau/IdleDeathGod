@@ -97,5 +97,7 @@ function loadState()
     technologies[key].isactive = gameStateData.techTree[key];
   }
 
+  updateTechDependencies();
+
 
 }
