@@ -12,6 +12,11 @@ const TextBox = {
     init: function(containerId) {
         this.textContainer = document.getElementById(containerId);
         this.typeText();
+        this.addText("TEST OBJECT LINE 15 A very short time after the creation of the humans, God got very quickly bored of them. Instead of supervising them, he creates a new entity, deep below the mortal re al m", speaker='God');
+        this.addText("TEST OBJECT LINE 15  A very short time after the creation of the humans, God got very quickly bored of them. Instead of supervising them, he creates a new entity, deep below the mortal r ealm", speaker='God');
+        this.addText("TEST OBJECT LINE 15   A very short time after the creation of the humans, God got very quickly bored of them. Instead of supervising them, he creates a new entity, deep below the mortal realm", speaker='God');
+      
+
         this.addText("A very short time after the creation of the humans, God got very quickly bored of them. Instead of supervising them, he creates a new entity, deep below the mortal realm");
         this.addText("...  ... You.");
         this.addText("Watch over the mortals, my creation. I have more important matters to attend. You are in charge of the upper as the below realm, do as you will, but try to keep them going.", 'God');
@@ -25,8 +30,20 @@ const TextBox = {
             const textElement = document.createElement('div');
             if (speaker === 'God') {
                 textElement.className = 'godText';
+                textElement.innerHTML = text.split('').map((char, index) => {
+                  if(char == ' ')
+                  { 
+                    return `<span style="animation-delay: ${Math.random() * 2 - 1}s;">&nbsp;</span>`
+                  }
+                  else
+                  {
+                    return `<span style="animation-delay: ${Math.random()*2 - 1}s;">${char}</span>`
+                  }
+                }).join('');
             }
+            else{
             textElement.textContent = text;
+            }
             this.textContainer.appendChild(textElement);
             
             const animationDuration = (text.length * this.textSpeed) / 1000;

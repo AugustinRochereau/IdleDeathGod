@@ -7,6 +7,31 @@
     font-weight: bold;
 }
 
+.godText span{
+  display: inline-block;
+  position: relative;
+  animation: wave 3s infinite ease-in-out;
+}
+
+@keyframes wave {
+    0% {
+        transform: translateY(0);
+    }
+    25% {
+        transform: translateY(-3px);
+    }
+    50% {
+        transform: translateY(0);
+    }
+    75% {
+        transform: translateY(3px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+
 #mortalRealmResetText {
     position: absolute;
     top: 50%;
