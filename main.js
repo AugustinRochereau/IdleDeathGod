@@ -12,7 +12,7 @@
 //let maxGrowthAffect = 0.1;
 //let soulPointMultiplier = 1;
 
-//let lastUpdateTime = 0;
+let lastUpdateTime = 0;
 const updatesPerSecond = 60;
 const timePerUpdate = 1000 / updatesPerSecond;
 const intervalBetweenSave = 3 * 1000;
@@ -31,7 +31,7 @@ const intervalBetweenSave = 3 * 1000;
 function updatePopulation() {
     
     const currentTime = performance.now();
-    const deltaTime = currentTime - gV.lastUpdateTime;
+    const deltaTime = currentTime - lastUpdateTime;
 
     let randomGrowthAffect = (Math.random() * 2 - 1) * gV.maxGrowthAffect;
     if (deltaTime >= timePerUpdate) {
@@ -43,7 +43,7 @@ function updatePopulation() {
         //console.log("%s %s %s", growth, randomGrowthAffect, deaths);
         gV.livingHumans += growth * (1 + randomGrowthAffect) - deaths;
         gV.deadSouls += (gV.upgradeNumbers["soulVessels"] + 1) * deaths;
-        gV.lastUpdateTime = currentTime;
+        lastUpdateTime = currentTime;
         gV.years += deltaTime * gV.tickspeed / 1000;
         //console.log("After %s", gV.livingHumans);
     }

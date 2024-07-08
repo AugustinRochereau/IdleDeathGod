@@ -16,9 +16,6 @@ let gV = // Game Vars
   soulPointMultiplier: 1,
 
 
-  // Time related variables
-  lastUpdateTime : 0,
-
   // World Tendancy variables 
 
   worldTendancyMinLifeExpectancy : 15,
