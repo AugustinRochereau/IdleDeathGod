@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="stylesText.css">
     <link rel="stylesheet" href="stylesUpgrade.css">
+    <link rel="stylesheet" href="stylesButtons.css">
     <link rel="stylesheet" href="stylesAchievements.css">
     <!--    Fonts    -->
     <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
@@ -16,6 +17,7 @@
     <script src="featsManager.js"></script>
     <script src="techUpgrades.js"></script>
     <script src="saveSystem.js"></script>
+    <script src="civilisationManager.js"></script>
     <title>Idle Death God</title>
 </head>
 <script src="main.js"></script>
@@ -108,13 +110,18 @@
                 </div>
             </div>
         </div>
-        <div class="hourglass">
-            <div class="top-part">
-                <div class="counter black-text" id="living-humans">Living Humans: 0</div>
-            </div>
-            <div class="middle-part"></div>
-            <div class="bottom-part">
-                <div class="counter" id="dead-souls">Souls: 0</div>
+        <div class="hourglass-container">
+            <div class="hourglass-wrapper">
+                <div class="hourglass">
+                    <div class="top-part">
+                        <div class="counter black-text" id="living-humans">Living Humans: 0</div>
+                    </div>
+                    <div class="middle-part"></div>
+                    <div class="bottom-part">
+                        <div class="counter" id="dead-souls">Souls: 0</div>
+                    </div>
+                </div>
+                <button class="advanceCivButton" onclick="advanceCivilisation()">Advance to next civilization</button>
             </div>
         </div>
         <div class="pillar right-pillar">

@@ -15,12 +15,15 @@ let gV = // Game Vars
   maxGrowthAffect: 0.1,
   soulPointMultiplier: 1,
 
-
   // World Tendancy variables 
 
   worldTendancyMinLifeExpectancy : 15,
   worldTendancyMaxLifeExpectancy : 25,
-  
+
+  // Civilisation variables
+  isCivilisation: false,
+  civName: '',
+
   // Upgrade variables
   upgradeCosts : {
       diseaseButton: 1000,
@@ -37,7 +40,4 @@ let gV = // Game Vars
       'a1': false,
       'a2': false,
   },
-  
-
-
 };

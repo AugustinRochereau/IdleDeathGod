@@ -164,11 +164,21 @@ function floatNumberFormat(x) {
 }
 
 function statisticsDisplay() {
-    document.getElementById("statisticsDisplay").innerHTML = 'You are in mortal realm number ' + 
-                        gV.mortalRealmNumber + '.<br><span style="font-size: 12px;">It is year '+ Math.floor(gV.years) + 
-                        ', tickspeed is ' + floatNumberFormat(gV.tickspeed) +'<br>Human life expectancy: ' + 
-                        Math.floor(gV.lifeExpectancy) + ' years.<br>Death rate: ' + gV.deathRate.toExponential(2) + ".<br>" + 
-                        "<span class='godText'> You have " + floatNumberFormat(gV.soulPoints) + " soul points, boosting growth rate by " + floatNumberFormat(gV.soulPoints + 1) +"</span></span>";
+    display = 'You are in mortal realm number ' + 
+            gV.mortalRealmNumber + '.<br><span style="font-size: 12px;">It is year '+ Math.floor(gV.years) + 
+            ', tickspeed is ' + floatNumberFormat(gV.tickspeed) +'<br>Human life expectancy: ' + 
+            Math.floor(gV.lifeExpectancy) + ' years.<br>Death rate: ' + gV.deathRate.toExponential(2) + ".<br>" + 
+            "<span class='godText'> You have " + floatNumberFormat(gV.soulPoints) + " soul points, boosting growth rate by " + floatNumberFormat(gV.soulPoints + 1) +"</span></span>";
+
+    if (gV.isCivilisation){
+        display += '<br><span style="font-size: 12px;">You are in the ' + gV.civName + " empire era.</span>"
+    }
+    document.getElementById("statisticsDisplay").innerHTML = display;
+}
+
+function advanceCivilisation(){
+    gV.isCivilisation = true;
+    gV.civName = generateCivName();
 }
 
 setInterval(updatePopulation, timePerUpdate);
@@ -237,4 +247,6 @@ function setGameActions() {
         }
     }); 
 }
+
+
 
