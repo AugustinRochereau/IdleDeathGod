@@ -90,6 +90,11 @@ function resetToDefaultValues() {
     gV.years = 0;
     gV.tickspeed = 1;
 
+    // Civilisation variables
+    gV.isCivilisation = false;
+    gV.civName = '';
+    gV.nbLivingHumansToAdvance = 450;
+
     gV.upgradeCosts = {
         "diseaseButton": 1000,
         "tickspeedUpgrade": 100,
@@ -182,7 +187,7 @@ function advanceCivilisation(){
         gV.civName = generateCivName();
         gV.nbLivingHumansToAdvance *= 10;
         document.getElementById("advanceCivButton").innerHTML = "Advance to next civilization" +
-            "<span class='upgradeDescription'>"+ gV.nbLivingHumansToAdvance +" living humans</span> ";
+            "<span class='upgradeDescription'>"+ gV.nbLivingHumansToAdvance +" living humans</span>";
     }
 }
 
