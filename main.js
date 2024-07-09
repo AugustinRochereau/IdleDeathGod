@@ -35,10 +35,14 @@ function updatePopulation() {
 
     let randomGrowthAffect = (Math.random() * 2 - 1) * gV.maxGrowthAffect;
     if (deltaTime >= timePerUpdate) {
+
+        gV.maxLivingHumans += (gV.soulPoints + 1) * gV.maxHumansGrowthRate * gV.maxHumansGrowthRateMultiplier * deltaTime / 1000;
+        computedMaxLivingHumans = Math.max(gV.maxLivingHumans, gV.livingHumans + 20);
+
         //console.log("Before %s", gV.livingHumans);
         gV.deathRate = 1 / (gV.lifeExpectancy);
         
-        let growth = (gV.soulPoints + 1) * gV.growthRate * gV.livingHumans * (1 - gV.livingHumans / Math.max(gV.maxLivingHumans, gV.livingHumans + 20)) ** gV.growthSlowdown * deltaTime * gV.tickspeed / 1000;
+        let growth = (gV.soulPoints + 1) * gV.growthRate * gV.livingHumans * (1 - gV.livingHumans / computedMaxLivingHumans) ** gV.growthSlowdown * deltaTime * gV.tickspeed / 1000;
         let deaths = gV.deathRate * gV.livingHumans * deltaTime * gV.tickspeed / 1000;
         //console.log("%s %s %s", growth, randomGrowthAffect, deaths);
         gV.livingHumans += growth * (1 + randomGrowthAffect) - deaths;
@@ -57,6 +61,10 @@ function updatePopulation() {
     statisticsDisplay();
 }
 
+function updateHUD(){
+    frameTechButtonsUpdate();
+}
+
 function nextMortalRealm() {
     displayMortalRealmResetScreen();
 }
@@ -65,7 +73,7 @@ function displayMortalRealmResetScreen(){
     const screen = document.getElementById("mortalRealmReset");
     const text = document.getElementById("mortalRealmResetText");
     screen.style.display = "block";
-    let soulPointsGain = (Math.max(0, Math.log10(gV.deadSouls) * gV.soulPointMultiplier - gV.soulPoints));
+    let soulPointsGain = gV.nbCivs + (Math.max(0, Math.log10(gV.deadSouls) * gV.soulPointMultiplier - gV.soulPoints));
     text.innerHTML = "<span style='font-size: 25px;'>You are entering mortal realm " + numberFormat(gV.mortalRealmNumber) + ".</span><br>" + 
                         "<span class='godText'>You led the humans for " + floatNumberFormat(gV.years) + " years.<br>" +
                         "For the souls you've watched over, I'll give you " + floatNumberFormat(soulPointsGain) + 
@@ -94,6 +102,7 @@ function resetToDefaultValues() {
     gV.isCivilisation = false;
     gV.civName = '';
     gV.nbLivingHumansToAdvance = 450;
+    gV.nbCivs = 0;
 
     gV.upgradeCosts = {
         "diseaseButton": 1000,
@@ -185,6 +194,7 @@ function advanceCivilisation(){
     if (gV.nbLivingHumansToAdvance <= gV.livingHumans){
         gV.isCivilisation = true;
         gV.civName = generateCivName();
+        gV.nbCivs += 1;
         gV.nbLivingHumansToAdvance *= 10;
         document.getElementById("advanceCivButton").innerHTML = "Advance to next civilization" +
             "<span class='upgradeDescription'>"+ gV.nbLivingHumansToAdvance +" living humans</span>";
@@ -192,6 +202,7 @@ function advanceCivilisation(){
 }
 
 setInterval(updatePopulation, timePerUpdate);
+setInterval(updateHUD, timePerUpdate);
 setInterval(saveState, intervalBetweenSave);
 
 // Loading and saving

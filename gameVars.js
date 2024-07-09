@@ -14,6 +14,8 @@ let gV = // Game Vars
   soulPoints: 0,
   maxGrowthAffect: 0.1,
   soulPointMultiplier: 1,
+  maxHumansGrowthRate: 0.01,
+  maxHumansGrowthRateMultiplier: 1,
 
   // World Tendancy variables 
 
@@ -24,6 +26,7 @@ let gV = // Game Vars
   isCivilisation: false,
   civName: '',
   nbLivingHumansToAdvance: 450,
+  nbCivs: 0,
 
   // Upgrade variables
   upgradeCosts : {

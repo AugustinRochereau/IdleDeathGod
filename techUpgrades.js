@@ -45,7 +45,10 @@ technologies = {
       document.getElementById("worldTendancy").style.display = "block";
       TextBox.addText("PLACEHOLDER_UNLOCK_WORLD_TENDANCY");
     }),
-
+    "tech-money-system": new techUpgrade("Money System", 8000, false, false, ["tech-unlock-soul-vessels"], 0,
+    function (){
+        gV.maxHumansGrowthRateMultiplier = function(){return Math.max(1, gV.deadSouls / 1000);};
+    })
 }
 
 // let worldTendancyMinLifeExpectancy = 15;
@@ -113,6 +116,13 @@ function updateTechButtonsDisplay() {
             button.classList.add("techUpgradeTreeButtonCanBuy");         
         }
     }
+}
+
+function frameTechButtonsUpdate(){
+    multiplier = Math.max(1, gV.deadSouls / 1000);
+    document.getElementById("tech-money-system").innerHTML = 'Money System<br>Cost: 8000 souls' +
+        '<span class="upgradeDescription">Multiplier to max human growth rate based on souls: x' + 
+        floatNumberFormat(multiplier) + '</span>';
 }
 
 function toggleTechUpgradeWindow() {
