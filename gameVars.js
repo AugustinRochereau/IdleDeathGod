@@ -23,6 +23,7 @@ let gV = // Game Vars
   // Civilisation variables
   isCivilisation: false,
   civName: '',
+  nbLivingHumansToAdvance: 450,
 
   // Upgrade variables
   upgradeCosts : {

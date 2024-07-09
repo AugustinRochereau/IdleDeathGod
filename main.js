@@ -80,12 +80,12 @@ function displayMortalRealmResetScreen(){
 }
 
 function resetToDefaultValues() {
-    gV.livingHumans = 2;
+    gV.livingHumans = 400;
     gV.growthRate = 0.1;
     gV.maxLivingHumans = 100;
     gV.growthSlowdown = 2; // exponent 
     gV.deathRate = 0;
-    gV.deadSouls = 0;
+    gV.deadSouls = 10000;
     gV.lifeExpectancy = 20;
     gV.years = 0;
     gV.tickspeed = 1;
@@ -177,8 +177,13 @@ function statisticsDisplay() {
 }
 
 function advanceCivilisation(){
-    gV.isCivilisation = true;
-    gV.civName = generateCivName();
+    if (gV.nbLivingHumansToAdvance <= gV.livingHumans){
+        gV.isCivilisation = true;
+        gV.civName = generateCivName();
+        gV.nbLivingHumansToAdvance *= 10;
+        document.getElementById("advanceCivButton").innerHTML = "Advance to next civilization" +
+            "<span class='upgradeDescription'>"+ gV.nbLivingHumansToAdvance +" living humans</span> ";
+    }
 }
 
 setInterval(updatePopulation, timePerUpdate);

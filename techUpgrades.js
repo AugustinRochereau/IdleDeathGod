@@ -305,7 +305,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     }
 
     function updateGameParameter(value) {
-        lifeExpectancy = gV.worldTendancyMinLifeExpectancy + value * (gV.worldTendancyMaxLifeExpectancy - gV.worldTendancyMinLifeExpectancy);
+        gV.lifeExpectancy = gV.worldTendancyMinLifeExpectancy + value * (gV.worldTendancyMaxLifeExpectancy - gV.worldTendancyMinLifeExpectancy);
     }
 
     // Allow clicking on the track to move the thumb
