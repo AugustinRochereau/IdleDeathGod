@@ -36,7 +36,7 @@ function updatePopulation() {
     let randomGrowthAffect = (Math.random() * 2 - 1) * gV.maxGrowthAffect;
     if (deltaTime >= timePerUpdate) {
 
-        gV.maxLivingHumans += (gV.soulPoints + 1) * gV.maxHumansGrowthRate * gV.maxHumansGrowthRateMultiplier() * deltaTime / 1000;
+        gV.maxLivingHumans += (gV.soulPoints + 1) * gV.maxHumansGrowthRate * maxHumansGrowthRateMultiplier(gV.maxHumansGrowthRateMultiplierCondition) * deltaTime / 1000;
         computedMaxLivingHumans = Math.max(gV.maxLivingHumans, gV.livingHumans + 20);
 
         //console.log("Before %s", gV.livingHumans);
@@ -60,6 +60,17 @@ function updatePopulation() {
     displayCounters();
     statisticsDisplay();
 }
+
+function maxHumansGrowthRateMultiplier(condition){
+    switch (condition){
+        case 0:
+            return 1;
+        case 1:
+            return Math.min(100, Math.max(1, gV.deadSouls / 1000));
+        default:
+            return 1;
+    }
+} 
 
 function updateHUD(){
     frameTechButtonsUpdate();
@@ -98,7 +109,7 @@ function resetToDefaultValues() {
     gV.years = 0;
     gV.tickspeed = 1;
     gV.maxHumansGrowthRate = 0.01;
-    gV.maxHumansGrowthRateMultiplier = function(){return 1;};
+    gV.maxHumansGrowthRateMultiplierCondition = 0;
 
     // Civilisation variables
     gV.isCivilisation = false;

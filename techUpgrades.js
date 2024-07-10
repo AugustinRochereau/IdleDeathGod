@@ -47,7 +47,7 @@ technologies = {
     }),
     "tech-money-system": new techUpgrade("Money System", 8000, false, false, ["tech-unlock-soul-vessels"], 0,
     function (){
-        gV.maxHumansGrowthRateMultiplier = function(){return Math.min(100, Math.max(1, gV.deadSouls / 1000));};
+        gV.maxHumansGrowthRateMultiplierCondition = 1;
     })
 }
 

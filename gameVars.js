@@ -15,7 +15,7 @@ let gV = // Game Vars
   maxGrowthAffect: 0.1,
   soulPointMultiplier: 1,
   maxHumansGrowthRate: 0.01,
-  maxHumansGrowthRateMultiplier: function(){return 1;},
+  maxHumansGrowthRateMultiplierCondition: 0,
 
   // World Tendancy variables 
 
