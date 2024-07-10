@@ -48,7 +48,11 @@ technologies = {
     "tech-money-system": new techUpgrade("Money System", 8000, false, false, ["tech-unlock-soul-vessels"], 0,
     function (){
         gV.maxHumansGrowthRateMultiplierCondition = 1;
-    })
+    }),
+    "tech-basic-medicine": new techUpgrade("Basic Medicine", 50000, false, false, ["tech-unlock-world-tendancy"], 0,
+    function (){
+        gV.worldTendancyMaxLifeExpectancy += 10;
+    }),
 }
 
 // let worldTendancyMinLifeExpectancy = 15;
@@ -120,14 +124,12 @@ function updateTechButtonsDisplay() {
 
 function frameTechButtonsUpdate(){
     multiplier = Math.max(1, gV.deadSouls / 1000);
+    button = document.getElementById("tech-money-system")
+    const descriptionSpan = button.querySelector('.upgradeDescription');
     if (multiplier < 100){
-        document.getElementById("tech-money-system").innerHTML = 'Money System<br>Cost: 8000 souls' +
-        '<span class="upgradeDescription">Multiplier to max human growth rate based on souls: x' + 
-        floatNumberFormat(multiplier) + '</span>';
+        descriptionSpan.textContent = 'Multiplier to max human growth rate based on souls: x' + floatNumberFormat(multiplier);
     } else {
-        document.getElementById("tech-money-system").innerHTML = 'Money System<br>Cost: 8000 souls' +
-        '<span class="upgradeDescription">Multiplier to max human growth rate based on souls: Capped at x' + 
-        '100</span>';        
+        descriptionSpan.textContent = 'Multiplier to max human growth rate based on souls: Capped at x100';        
     }
 
 }

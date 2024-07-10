@@ -71,7 +71,7 @@
                     </button>
                     <button class="techUpgradeTreeButton" id="tech-crops" style="left: 700px; top: 600px;" onclick="buyTechUpgrade(this.id)">Crops<br>Cost: 500 souls
                         <span class="upgradeDescription">Max humans multiplier * 2</span>
-                    </button>    
+                    </button>
                     <button class="techUpgradeTreeButton" id="tech-huts" style="left: 500px; top: 600px;" onclick="buyTechUpgrade(this.id)">Huts<br>Cost: 200 souls
                         <span class="upgradeDescription">Growth exponent slowdown - 0.2</span>
                     </button>  
@@ -84,9 +84,14 @@
                     <button class="techUpgradeTreeButton" id="tech-unlock-world-tendancy" style="left: 500px; top: 800px;" onclick="buyTechUpgrade(this.id)">Unlock World Tendancy<br>Cost: 5000 souls
                         <span class="upgradeDescription">Choose how peacefully the humans will live</span>
                     </button>  
-                    <button class="techUpgradeTreeButton" id="tech-money-system" style="left: 700px; top: 800px;" onclick="buyTechUpgrade(this.id)">Money System<br>Cost: 8000 souls
+                    <button class="techUpgradeTreeButton" id="tech-money-system" style="left: 700px; top: 800px;" onclick="buyTechUpgrade(this.id)">
+                        <span class="buttonLabel">Money System</span>
+                        <span class="buttonCost">Cost: 8000 souls</span>
                         <span class="upgradeDescription">Multiplier to max human growth rate based on souls: x1.0</span>
-                    </button>           
+                    </button>     
+                    <button class="techUpgradeTreeButton" id="tech-basic-medicine" style="left: 500px; top: 900px;" onclick="buyTechUpgrade(this.id)">Basic Medicine<br>Cost: 50000 souls
+                        <span class="upgradeDescription">Max life expectancy in world tendancy + 10</span>
+                    </button>        
                 </div>
                 <svg id="linesContainer"></svg>
             </div>
