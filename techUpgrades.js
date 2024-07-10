@@ -79,6 +79,7 @@ function updateTechDependencies()
 }
 
 function buyTechUpgrade(buttonId){
+    console.log("Attempting to buy " + buttonId);
     upgrade = technologies[buttonId];
     if(upgrade.canbuy)  {
         if (gV.deadSouls >= upgrade.cost) {

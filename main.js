@@ -200,7 +200,20 @@ function advanceCivilisation(){
         gV.nbLivingHumansToAdvance *= 10;
         document.getElementById("advanceCivButton").innerHTML = "Advance to next civilization" +
             "<span class='upgradeDescription'>"+ gV.nbLivingHumansToAdvance +" living humans</span>";
+        
+        // Choose civilisation perk
+        showCivilisationPerks();
     }
+}
+
+function showCivilisationPerks() {
+    document.getElementById('veil').classList.remove('hidden');
+    document.getElementById('cardContainer').classList.remove('hidden');
+}
+
+function hideCivilisationPerks() {
+    document.getElementById('veil').classList.add('hidden');
+    document.getElementById('cardContainer').classList.add('hidden');
 }
 
 setInterval(updatePopulation, timePerUpdate);

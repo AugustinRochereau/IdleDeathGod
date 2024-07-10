@@ -9,8 +9,6 @@ function saveState()
     techTree[key] = value.isactive;
   }
   
-
-
   const stateData = {
     gameVars : gV,
     stateTime: stateTime,
