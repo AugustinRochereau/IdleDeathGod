@@ -2,6 +2,7 @@
 let gV = // Game Vars
 {
   livingHumans: 2,
+  eternalHumans: 0,
   growthRate: 0.1,
   maxLivingHumans: 100,
   growthSlowdown: 2,
@@ -18,7 +19,6 @@ let gV = // Game Vars
   maxHumansGrowthRateMultiplierCondition: 0,
 
   // World Tendancy variables 
-
   worldTendancyMinLifeExpectancy : 15,
   worldTendancyMaxLifeExpectancy : 25,
 
@@ -44,4 +44,8 @@ let gV = // Game Vars
       'a1': false,
       'a2': false,
   },
+
+  // Statistics variables
+  maxPopulationEver: 0,
+  maxPopulation: 0,
 };

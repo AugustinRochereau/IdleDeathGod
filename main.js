@@ -37,12 +37,12 @@ function updatePopulation() {
     if (deltaTime >= timePerUpdate) {
 
         gV.maxLivingHumans += (gV.soulPoints + 1) * gV.maxHumansGrowthRate * maxHumansGrowthRateMultiplier(gV.maxHumansGrowthRateMultiplierCondition) * deltaTime / 1000;
-        computedMaxLivingHumans = Math.max(gV.maxLivingHumans, gV.livingHumans + 20);
+        computedMaxLivingHumans = Math.max(gV.maxLivingHumans, gV.livingHumans + 20) + gV.eternalHumans;
 
         //console.log("Before %s", gV.livingHumans);
         gV.deathRate = 1 / (gV.lifeExpectancy);
         
-        let growth = (gV.soulPoints + 1) * gV.growthRate * gV.livingHumans * (1 - gV.livingHumans / computedMaxLivingHumans) ** gV.growthSlowdown * deltaTime * gV.tickspeed / 1000;
+        let growth = (gV.soulPoints + 1) * gV.growthRate * (gV.livingHumans + gV.eternalHumans) * (1 - gV.livingHumans / computedMaxLivingHumans) ** gV.growthSlowdown * deltaTime * gV.tickspeed / 1000;
         let deaths = gV.deathRate * gV.livingHumans * deltaTime * gV.tickspeed / 1000;
         //console.log("%s %s %s", growth, randomGrowthAffect, deaths);
         gV.livingHumans += growth * (1 + randomGrowthAffect) - deaths;
@@ -51,6 +51,11 @@ function updatePopulation() {
         gV.years += deltaTime * gV.tickspeed / 1000;
         //console.log("After %s", gV.livingHumans);
     }
+    // Check for specific parameters
+    if (civPerks["perk-eternal-humans"].isactive == true){
+        gV.eternalHumans = Math.floor(gV.maxPopulation / 100);
+    }
+    // Check for achievements
     if (Math.floor(gV.livingHumans) <= 0){
         checkAchievement1();
         nextMortalRealm();
@@ -59,6 +64,7 @@ function updatePopulation() {
     }
     displayCounters();
     statisticsDisplay();
+    updateStatistics();
 }
 
 function maxHumansGrowthRateMultiplier(condition){
@@ -128,6 +134,8 @@ function resetToDefaultValues() {
         "soulVessels": 0,
     } 
 
+    gV.maxPopulation = 0;
+
     document.getElementById("tickspeedUpgrade").innerHTML = "Buy Tickspeed<br>Cost: 100 souls";
     document.getElementById("soulVessels").style.display = "none";
     document.getElementById("worldTendancy").style.display = "none";
@@ -168,10 +176,15 @@ function buySoulVessel(){
 
 function displayCounters() {
     hCounter = Math.floor(gV.livingHumans);
+    ehCounter = Math.floor(gV.eternalHumans);
     sCounter = Math.floor(gV.deadSouls);
-
-    document.getElementById('living-humans').innerHTML = `Living Humans:<br> <b>${numberFormat(hCounter)}</b>`;
-    document.getElementById('dead-souls').innerHTML = `Souls:<br> <b>${numberFormat(sCounter)}</b>`;
+    if (ehCounter > 0){
+        document.getElementById('living-humans').innerHTML = `Living Humans:<br> <b>${numberFormat(hCounter)}</b><span class='godText'> + ${numberFormat(ehCounter)}</span>`;
+        document.getElementById('dead-souls').innerHTML = `Souls:<br> <b>${numberFormat(sCounter)}</b>`;
+    } else {
+        document.getElementById('living-humans').innerHTML = `Living Humans:<br> <b>${numberFormat(hCounter)}</b>`;
+        document.getElementById('dead-souls').innerHTML = `Souls:<br> <b>${numberFormat(sCounter)}</b>`;
+    }
 }
 
 function numberFormat(n){
@@ -203,6 +216,11 @@ function statisticsDisplay() {
     document.getElementById("statisticsDisplay").innerHTML = display;
 }
 
+function updateStatistics(){
+    gV.maxPopulation = Math.max(gV.maxPopulation, gV.livingHumans);
+    gV.maxPopulationEver = Math.max(gV.maxPopulationEver, gV.livingHumans);
+}
+
 function advanceCivilisation(){
     if (gV.nbLivingHumansToAdvance <= gV.livingHumans){
         gV.isCivilisation = true;
@@ -220,6 +238,8 @@ function advanceCivilisation(){
 function showCivilisationPerks() {
     document.getElementById('veil').classList.remove('hidden');
     document.getElementById('cardContainer').classList.remove('hidden');
+
+    displayCivPerk()
 }
 
 function hideCivilisationPerks() {
