@@ -36,7 +36,7 @@ function updatePopulation() {
     let randomGrowthAffect = (Math.random() * 2 - 1) * gV.maxGrowthAffect;
     if (deltaTime >= timePerUpdate) {
 
-        gV.maxLivingHumans += (gV.soulPoints + 1) * gV.maxHumansGrowthRate * gV.maxHumansGrowthRateMultiplier * deltaTime / 1000;
+        gV.maxLivingHumans += (gV.soulPoints + 1) * gV.maxHumansGrowthRate * gV.maxHumansGrowthRateMultiplier() * deltaTime / 1000;
         computedMaxLivingHumans = Math.max(gV.maxLivingHumans, gV.livingHumans + 20);
 
         //console.log("Before %s", gV.livingHumans);
@@ -93,10 +93,12 @@ function resetToDefaultValues() {
     gV.maxLivingHumans = 100;
     gV.growthSlowdown = 2; // exponent 
     gV.deathRate = 0;
-    gV.deadSouls = 10000;
+    gV.deadSouls = 100000;
     gV.lifeExpectancy = 20;
     gV.years = 0;
     gV.tickspeed = 1;
+    gV.maxHumansGrowthRate = 0.01;
+    gV.maxHumansGrowthRateMultiplier = function(){return 1;};
 
     // Civilisation variables
     gV.isCivilisation = false;

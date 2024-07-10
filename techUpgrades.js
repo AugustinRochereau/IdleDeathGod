@@ -47,7 +47,7 @@ technologies = {
     }),
     "tech-money-system": new techUpgrade("Money System", 8000, false, false, ["tech-unlock-soul-vessels"], 0,
     function (){
-        gV.maxHumansGrowthRateMultiplier = function(){return Math.max(1, gV.deadSouls / 1000);};
+        gV.maxHumansGrowthRateMultiplier = function(){return Math.min(100, Math.max(1, gV.deadSouls / 1000));};
     })
 }
 
@@ -120,9 +120,16 @@ function updateTechButtonsDisplay() {
 
 function frameTechButtonsUpdate(){
     multiplier = Math.max(1, gV.deadSouls / 1000);
-    document.getElementById("tech-money-system").innerHTML = 'Money System<br>Cost: 8000 souls' +
+    if (multiplier < 100){
+        document.getElementById("tech-money-system").innerHTML = 'Money System<br>Cost: 8000 souls' +
         '<span class="upgradeDescription">Multiplier to max human growth rate based on souls: x' + 
         floatNumberFormat(multiplier) + '</span>';
+    } else {
+        document.getElementById("tech-money-system").innerHTML = 'Money System<br>Cost: 8000 souls' +
+        '<span class="upgradeDescription">Multiplier to max human growth rate based on souls: Capped at x' + 
+        '100</span>';        
+    }
+
 }
 
 function toggleTechUpgradeWindow() {
