@@ -36,24 +36,26 @@ function updatePopulation() {
     let randomGrowthAffect = (Math.random() * 2 - 1) * gV.maxGrowthAffect;
     if (deltaTime >= timePerUpdate) {
 
+        ehCounter = gV.eternalHumans + gV.eternalHumansThisRealm;
+
         gV.maxLivingHumans += (gV.soulPoints + 1) * gV.maxHumansGrowthRate * maxHumansGrowthRateMultiplier(gV.maxHumansGrowthRateMultiplierCondition) * deltaTime / 1000;
-        computedMaxLivingHumans = Math.max(gV.maxLivingHumans, gV.livingHumans + 20) + gV.eternalHumans;
+        computedMaxLivingHumans = Math.max(gV.maxLivingHumans, gV.livingHumans + 20) + ehCounter;
 
         //console.log("Before %s", gV.livingHumans);
         gV.deathRate = 1 / (gV.lifeExpectancy);
         
-        let growth = (gV.soulPoints + 1) * gV.growthRate * (gV.livingHumans + gV.eternalHumans) * (1 - gV.livingHumans / computedMaxLivingHumans) ** gV.growthSlowdown * deltaTime * gV.tickspeed / 1000;
+        let growth = (gV.soulPoints + 1) * gV.growthRate * (gV.livingHumans + ehCounter) * (1 - gV.livingHumans / computedMaxLivingHumans) ** gV.growthSlowdown * deltaTime * gV.tickspeed / 1000;
         let deaths = gV.deathRate * gV.livingHumans * deltaTime * gV.tickspeed / 1000;
         //console.log("%s %s %s", growth, randomGrowthAffect, deaths);
         gV.livingHumans += growth * (1 + randomGrowthAffect) - deaths;
-        gV.deadSouls += (gV.upgradeNumbers["soulVessels"] + 1) * deaths;
+        gV.deadSouls += gV.soulVesselMultiplier * (gV.upgradeNumbers["soulVessels"] + 1) * deaths;
         lastUpdateTime = currentTime;
         gV.years += deltaTime * gV.tickspeed / 1000;
         //console.log("After %s", gV.livingHumans);
     }
     // Check for specific parameters
     if (civPerks["perk-eternal-humans"].isactive == true){
-        gV.eternalHumans = Math.floor(gV.maxPopulation / 100);
+        gV.eternalHumansThisRealm = Math.floor(gV.maxPopulation / 100);
     }
     // Check for achievements
     if (Math.floor(gV.livingHumans) <= 0){
@@ -98,6 +100,7 @@ function displayMortalRealmResetScreen(){
 
     screen.addEventListener("click", hideMortalRealmResetScreen);
 
+    gV.eternalHumans += gV.eternalHumansThisRealm;
     gV.soulPoints += soulPointsGain;
     gV.mortalRealmNumber += 1;
     resetToDefaultValues();
@@ -106,6 +109,7 @@ function displayMortalRealmResetScreen(){
 
 function resetToDefaultValues() {
     gV.livingHumans = 400;
+    gV.eternalHumansThisRealm = 0;
     gV.growthRate = 0.1;
     gV.maxLivingHumans = 100;
     gV.growthSlowdown = 2; // exponent 
@@ -134,6 +138,8 @@ function resetToDefaultValues() {
         "soulVessels": 0,
     } 
 
+    gV.soulVesselMultiplier = 1;
+
     gV.maxPopulation = 0;
 
     document.getElementById("tickspeedUpgrade").innerHTML = "Buy Tickspeed<br>Cost: 100 souls";
@@ -157,6 +163,11 @@ function resetToDefaultValues() {
     updateTechDependencies();
 
     updateTechButtonsDisplay();
+
+    for (var id in civPerks)
+    {
+        civPerks[id].isactive = false;
+    }
 }
 
 function hideMortalRealmResetScreen(){
@@ -170,13 +181,13 @@ function buySoulVessel(){
         gV.upgradeNumbers["soulVessels"] += 1;
         gV.upgradeCosts["soulVessels"] *= 1.5;
     }
-    soulVesselsButton.innerHTML = "Next Soul Vessel: " + numberFormat(gV.upgradeCosts["soulVessels"]) +" souls" + 
+    soulVesselsButton.innerHTML = "Next Soul Vessel: " + numberFormat(Math.floor(gV.upgradeCosts["soulVessels"])) +" souls" + 
                         '<span class="upgradeDescription" style="font-size: 10px;">Reset souls for a boost to soul gains</span>'
 }
 
 function displayCounters() {
     hCounter = Math.floor(gV.livingHumans);
-    ehCounter = Math.floor(gV.eternalHumans);
+    ehCounter = Math.floor(gV.eternalHumans + gV.eternalHumansThisRealm);
     sCounter = Math.floor(gV.deadSouls);
     if (ehCounter > 0){
         document.getElementById('living-humans').innerHTML = `Living Humans:<br> <b>${numberFormat(hCounter)}</b><span class='godText'> + ${numberFormat(ehCounter)}</span>`;
@@ -207,7 +218,8 @@ function statisticsDisplay() {
     display = 'You are in mortal realm number ' + 
             gV.mortalRealmNumber + '.<br><span style="font-size: 12px;">It is year '+ Math.floor(gV.years) + 
             ', tickspeed is ' + floatNumberFormat(gV.tickspeed) +'<br>Human life expectancy: ' + 
-            Math.floor(gV.lifeExpectancy) + ' years.<br>Death rate: ' + gV.deathRate.toExponential(2) + ".<br>" + 
+            Math.floor(gV.lifeExpectancy) + ' years.<br>Death rate: ' + gV.deathRate.toExponential(2) + 
+            ", soul vessels multiplier: " + numberFormat(gV.soulVesselMultiplier * (gV.upgradeNumbers["soulVessels"] + 1)) + "<br>" + 
             "<span class='godText'> You have " + floatNumberFormat(gV.soulPoints) + " soul points, boosting growth rate by " + floatNumberFormat(gV.soulPoints + 1) +"</span></span>";
 
     if (gV.isCivilisation){
@@ -284,7 +296,7 @@ function setGameActions() {
             gV.tickspeed *= 1.05;
             gV.upgradeCosts["tickspeedUpgrade"] *= 1.1;
             gV.upgradeNumbers["tickspeedUpgrade"] += 1;
-            upgradeButton.innerHTML = "Buy Tickspeed<br>Cost: " + gV.upgradeCosts["tickspeedUpgrade"].toFixed(2) + " souls";
+            upgradeButton.innerHTML = "Buy Tickspeed<br>Cost: " + floatNumberFormat(gV.upgradeCosts["tickspeedUpgrade"]) + " souls";
         }
     });
 

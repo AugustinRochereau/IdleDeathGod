@@ -3,6 +3,7 @@ let gV = // Game Vars
 {
   livingHumans: 2,
   eternalHumans: 0,
+  eternalHumansThisRealm: 0,
   growthRate: 0.1,
   maxLivingHumans: 100,
   growthSlowdown: 2,
@@ -38,6 +39,8 @@ let gV = // Game Vars
       tickspeedUpgrade: 0,
       soulVessels: 0,
     },
+
+  soulVesselMultiplier: 1,
 
   // Achievement variables
   achievement_unlocks : {

@@ -31,9 +31,12 @@ function civilisationPerk(name, type, id, isactive, description, buyfunction){
 civPerks = {
     "perk-eternal-humans": new civilisationPerk("Underground Pact", 0, "perk-eternal-humans", false,
     "Gain 1% of your maximum population as Eternal Humans from now until you reset.",
-    function(){
-        gV.eternalHumans = Math.floor(gV.maxPopulation / 100);
-    }),
+    function(){}),
+    "perk-occult-vessels": new civilisationPerk("Occult Art", 1, "perk-occult-vessels", false,
+    "Cultist make offerings that improve soul vessels effectiveness by 4.",
+    function() {
+        gV.soulVesselMultiplier *= 4;
+    })
 }
 
 function getCivPerk(){
@@ -79,7 +82,18 @@ function displayCivPerk() {
     card1 = document.getElementById('card1');
     card1.innerHTML = "<h3>" + perk1.name + "</h3>" +
                         "<p>" + perk1.description + "</p>" + 
-                        "<button class='choosePerkButton' data-perkid='" + perk1.id + "' onclick='buyCivPerk(this.getAttribute(\"data-perkid\"))'>Choose</button>";                 
+                        "<button class='choosePerkButton' data-perkid='" + perk1.id + 
+                        "' onclick='buyCivPerk(this.getAttribute(\"data-perkid\"))'>Choose</button>";                 
     card1.style.backgroundColor = perkColor(perk1.type);
     card1.style.color = perkTextColor(perk1.type);
+
+    // Card 2
+    perk2 = civPerks["perk-occult-vessels"];
+    card2 = document.getElementById('card2');
+    card2.innerHTML = "<h3>" + perk2.name + "</h3>" +
+                        "<p>" + perk2.description + "</p>" + 
+                        "<button class='choosePerkButton' data-perkid='" + perk2.id + 
+                        "' onclick='buyCivPerk(this.getAttribute(\"data-perkid\"))'>Choose</button>";   
+    card2.style.backgroundColor = perkColor(perk2.type);
+    card2.style.color = perkTextColor(perk2.type);              
 }
