@@ -1,5 +1,4 @@
-
-let gV = // Game Vars
+const baseValues =
 {
   livingHumans: 2,
   eternalHumans: 0,
@@ -51,4 +50,13 @@ let gV = // Game Vars
   // Statistics variables
   maxPopulationEver: 0,
   maxPopulation: 0,
-};
+}
+
+
+let gV = // Game Vars
+{ ...baseValues};
+
+function resetGame() 
+{
+	gV = { ...baseValues};
+}
