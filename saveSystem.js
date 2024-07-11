@@ -18,7 +18,6 @@ function saveState()
 
 }
 
-
 function loadState()
 {  
   const cookies = document.cookie.split('; ');
@@ -32,6 +31,7 @@ function loadState()
   else
   {
     const gameStateData = JSON.parse(decodeURIComponent(gameStateCookie.split('=')[1]));
+		stateTime = gameStateData.stateTime;
     
 
     gV = gameStateData.gameVars; 
@@ -48,8 +48,23 @@ function loadState()
         technologies[key].buyfunction();
       }
     }
+			
 
     updateTechDependencies();
+
+		deltaTime = Math.min(Date.now() - stateTime, maxOfflineTime);
+		deltaTime = 3600 * 1000;
+		console.log("Been offline for %s seconds", deltaTime/1000);
+
+		nbIter = deltaTime / timePerUpdate;
+		lastIter = deltaTime % timePerUpdate;
+
+		for(let i = 0; i < nbIter; i++)
+		{
+			applyUpdatePop(timePerUpdate);
+		}
+		applyUpdatePop(lastIter);
+		
     updateTechButtonsDisplay();
   }
 }

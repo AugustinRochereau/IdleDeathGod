@@ -16,6 +16,7 @@ let lastUpdateTime = 0;
 const updatesPerSecond = 60;
 const timePerUpdate = 1000 / updatesPerSecond;
 const intervalBetweenSave = 3 * 1000;
+const maxOfflineTime = 3600 * 1000; // 1 hour of offline time
 
 diseaseMutation = false;
 
@@ -30,11 +31,8 @@ diseaseMutation = false;
 //    "soulVessels": 0,
 //}
 
-function updatePopulation() {
-    
-    const currentTime = performance.now();
-    const deltaTime = currentTime - lastUpdateTime;
 
+function applyUpdatePop(deltaTime) {
     let randomGrowthAffect = (Math.random() * 2 - 1) * gV.maxGrowthAffect;
     if (deltaTime >= timePerUpdate) {
 
@@ -51,7 +49,6 @@ function updatePopulation() {
         //console.log("%s %s %s", growth, randomGrowthAffect, deaths);
         gV.livingHumans += growth * (1 + randomGrowthAffect) - deaths;
         gV.deadSouls += gV.soulVesselMultiplier * (gV.upgradeNumbers["soulVessels"] + 1) * deaths;
-        lastUpdateTime = currentTime;
         gV.years += deltaTime * gV.tickspeed / 1000;
         //console.log("After %s", gV.livingHumans);
     }
@@ -66,9 +63,18 @@ function updatePopulation() {
     } else if (Math.floor(gV.livingHumans) >= gV.maxLivingHumans){
         checkAchievement2();
     }
+}
+
+
+function updatePopulation() {
+    
+    const currentTime = performance.now();
+    const deltaTime = currentTime - lastUpdateTime;
+		applyUpdatePop(deltaTime);
     displayCounters();
     statisticsDisplay();
     updateStatistics();
+
 }
 
 function maxHumansGrowthRateMultiplier(condition){
