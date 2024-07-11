@@ -17,6 +17,8 @@ const updatesPerSecond = 60;
 const timePerUpdate = 1000 / updatesPerSecond;
 const intervalBetweenSave = 3 * 1000;
 
+diseaseMutation = false;
+
 //upgradeCosts = {
 //    "diseaseButton": 1000,
 //    "tickspeedUpgrade": 100,
@@ -38,7 +40,7 @@ function updatePopulation() {
 
         ehCounter = gV.eternalHumans + gV.eternalHumansThisRealm;
 
-        gV.maxLivingHumans += (gV.soulPoints + 1) * gV.maxHumansGrowthRate * maxHumansGrowthRateMultiplier(gV.maxHumansGrowthRateMultiplierCondition) * deltaTime / 1000;
+        gV.maxLivingHumans += (gV.soulPoints + 1) * gV.maxHumansGrowthRate * maxHumansGrowthRateMultiplier(gV.maxHumansGrowthRateMultiplierCondition) * deathRateMultiplier(gV.deathRateMultiplierCondition) *deltaTime / 1000;
         computedMaxLivingHumans = Math.max(gV.maxLivingHumans, gV.livingHumans + 20) + ehCounter;
 
         //console.log("Before %s", gV.livingHumans);
@@ -80,6 +82,17 @@ function maxHumansGrowthRateMultiplier(condition){
     }
 } 
 
+function deathRateMultiplier(condition){
+    switch (condition){
+        case 0:
+            return 1;
+        case 1:
+            return max(1, (gV.deathRate * 100) ** 2)
+        default: 
+            return 1;
+    }
+}
+
 function updateHUD(){
     frameTechButtonsUpdate();
 }
@@ -108,18 +121,23 @@ function displayMortalRealmResetScreen(){
 }
 
 function resetToDefaultValues() {
-    gV.livingHumans = 400;
+    gV.livingHumans = 2;
     gV.eternalHumansThisRealm = 0;
     gV.growthRate = 0.1;
     gV.maxLivingHumans = 100;
     gV.growthSlowdown = 2; // exponent 
     gV.deathRate = 0;
-    gV.deadSouls = 100000;
+    gV.deadSouls = 0;
     gV.lifeExpectancy = 20;
     gV.years = 0;
     gV.tickspeed = 1;
     gV.maxHumansGrowthRate = 0.01;
     gV.maxHumansGrowthRateMultiplierCondition = 0;
+    gV.deathRateMultiplierCondition = 0;
+    gV.diseaseMutationNumber = 0.95;
+
+    gV.worldTendancyMaxLifeExpectancy = 25;
+    gV.worldTendancyMinLifeExpectancy = 15;
 
     // Civilisation variables
     gV.isCivilisation = false;
@@ -132,7 +150,7 @@ function resetToDefaultValues() {
         "tickspeedUpgrade": 100,
         "soulVessels": 1000,
     }
-    
+
     gV.upgradeNumbers = {
         "tickspeedUpgrade": 0,
         "soulVessels": 0,
@@ -145,7 +163,12 @@ function resetToDefaultValues() {
     document.getElementById("tickspeedUpgrade").innerHTML = "Buy Tickspeed<br>Cost: 100 souls";
     document.getElementById("soulVessels").style.display = "none";
     document.getElementById("worldTendancy").style.display = "none";
+    document.getElementById("advanceCivButton").innerHTML = "Advance to next civilization" +
+    "<span class='upgradeDescription'>"+ gV.nbLivingHumansToAdvance +" living humans</span>";
 
+    soulVesselsButton.innerHTML = "Soul vessels (" + gV.upgradeNumbers["soulVessels"] + ")<br>" + 
+    "Next: " + numberFormat(Math.floor(gV.upgradeCosts["soulVessels"])) +" souls" + 
+    '<span class="upgradeDescription" style="font-size: 10px;">Reset souls for a boost to soul gains</span>'
     //technologies = {
     //    "tech-fire": new techUpgrade("Fire", 50, false, true),
     //    "tech-tools1": new techUpgrade("Tools 1", 100, false, false),
@@ -168,6 +191,8 @@ function resetToDefaultValues() {
     {
         civPerks[id].isactive = false;
     }
+
+    diseaseMutation = false;
 }
 
 function hideMortalRealmResetScreen(){
@@ -181,7 +206,8 @@ function buySoulVessel(){
         gV.upgradeNumbers["soulVessels"] += 1;
         gV.upgradeCosts["soulVessels"] *= 1.5;
     }
-    soulVesselsButton.innerHTML = "Next Soul Vessel: " + numberFormat(Math.floor(gV.upgradeCosts["soulVessels"])) +" souls" + 
+    soulVesselsButton.innerHTML = "Soul vessels (" + gV.upgradeNumbers["soulVessels"] + ")<br>" + 
+                        "Next: " + numberFormat(Math.floor(gV.upgradeCosts["soulVessels"])) +" souls" + 
                         '<span class="upgradeDescription" style="font-size: 10px;">Reset souls for a boost to soul gains</span>'
 }
 
@@ -296,7 +322,7 @@ function setGameActions() {
             gV.tickspeed *= 1.05;
             gV.upgradeCosts["tickspeedUpgrade"] *= 1.1;
             gV.upgradeNumbers["tickspeedUpgrade"] += 1;
-            upgradeButton.innerHTML = "Buy Tickspeed<br>Cost: " + floatNumberFormat(gV.upgradeCosts["tickspeedUpgrade"]) + " souls";
+            upgradeButton.innerHTML = "Buy Tickspeed<br>Cost: " + numberFormat(Math.floor(gV.upgradeCosts["tickspeedUpgrade"])) + " souls";
         }
     });
 
@@ -304,10 +330,15 @@ function setGameActions() {
 
         if (gV.deadSouls >= 1000) {
             gV.deadSouls -= 1000;
-            let sick = gV.livingHumans * 0.95;
+            let sick = gV.livingHumans * gV.diseaseMutationNumber;
             gV.livingHumans -= sick;
             gV.deadSouls += sick;
-            TextBox.addText("You inflict a ferocious disease to the humans, effectively killing 95% of them.")
+            TextBox.addText("You inflict a ferocious disease to the humans. They die by massive numbers.")
+            if (diseaseMutation){
+                a = gV.diseaseMutationNumber
+                gV.diseaseMutationNumber += (1 - a) / 3;
+                console.log(gV.diseaseMutationNumber);
+            }
         }
         displayCounters();
     });

@@ -31,12 +31,26 @@ function civilisationPerk(name, type, id, isactive, description, buyfunction){
 civPerks = {
     "perk-eternal-humans": new civilisationPerk("Underground Pact", 0, "perk-eternal-humans", false,
     "Gain 1% of your maximum population as Eternal Humans from now until you reset.",
-    function(){}),
-    "perk-occult-vessels": new civilisationPerk("Occult Art", 1, "perk-occult-vessels", false,
-    "Cultist make offerings that improve soul vessels effectiveness by 4.",
+    function(){
+        TextBox.addText("Eternal humans can survive the worst apocalypse. The thing is, they do not die. So they won't give you souls." + 
+        " But fortunately, they can make perfectly mortal babies. Granting eternal life to one does not make it hereditary." +
+        " Just imagine if it was the case. Then you would not have any souls. So boring.");
+    }),
+    "perk-occult-vessels": new civilisationPerk("Wealthy vessels", 1, "perk-occult-vessels", false,
+    "Improve soul vessels effectiveness by 4.",
     function() {
         gV.soulVesselMultiplier *= 4;
-    })
+        TextBox.addText("It is now a custody to put belongings with the dead. Why would humans do that ?" +
+                        " I mean, it still gives you more souls, so no complaining here.");
+    }),
+    "perk-mythic-heroes": new civilisationPerk("Mythic heroes", 1, "perk-mythic-heroes", false,
+    "Multiplier to souls gained based on death rate. World tendancy minimum life expectancy -10"),
+    function() {
+        gV.worldTendancyMinLifeExpectancy -= 10;
+        gV.deathRateMultiplierCondition = 1;
+        TextBox.addText("In times of war, great heroes emerge and stand ground on small bridges against hordes of enemies." + 
+                        " The more they fight, the more souls you gain.")
+    }
 }
 
 function getCivPerk(){
@@ -95,5 +109,15 @@ function displayCivPerk() {
                         "<button class='choosePerkButton' data-perkid='" + perk2.id + 
                         "' onclick='buyCivPerk(this.getAttribute(\"data-perkid\"))'>Choose</button>";   
     card2.style.backgroundColor = perkColor(perk2.type);
-    card2.style.color = perkTextColor(perk2.type);              
+    card2.style.color = perkTextColor(perk2.type);   
+    
+    // Card 3
+    perk3 = civPerks["perk-mythic-heroes"];
+    card3 = document.getElementById('card3');
+    card3.innerHTML = "<h3>" + perk3.name + "</h3>" +
+                        "<p>" + perk3.description + "</p>" + 
+                        "<button class='choosePerkButton' data-perkid='" + perk3.id + 
+                        "' onclick='buyCivPerk(this.getAttribute(\"data-perkid\"))'>Choose</button>";   
+    card3.style.backgroundColor = perkColor(perk3.type);
+    card3.style.color = perkTextColor(perk3.type);  
 }

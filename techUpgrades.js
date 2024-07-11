@@ -53,6 +53,10 @@ technologies = {
     function (){
         gV.worldTendancyMaxLifeExpectancy += 10;
     }),
+    "tech-disease-mutation": new techUpgrade("Disease Mutation", 100000, false, false, ["tech-money-system"], 0,
+    function(){
+        diseaseMutation = true;
+    }),
 }
 
 // let worldTendancyMinLifeExpectancy = 15;

@@ -17,6 +17,8 @@ const baseValues =
   soulPointMultiplier: 1,
   maxHumansGrowthRate: 0.01,
   maxHumansGrowthRateMultiplierCondition: 0,
+  deathRateMultiplierCondition: 0,
+  diseaseMutationNumber: 0.95,
 
   // World Tendancy variables 
   worldTendancyMinLifeExpectancy : 15,
