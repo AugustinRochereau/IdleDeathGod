@@ -43,9 +43,9 @@ function loadState()
     for(var key in technologies)
     {
       technologies[key].isactive = gameStateData.techTree[key];
-      if(technologies[key].upgradetype == 1 && technologies[key].isactive)
+      if(technologies[key].isactive)
       {
-        technologies[key].buyfunction();
+        technologies[key].hudfunction();
       }
     }
 			

@@ -172,6 +172,7 @@ function resetToDefaultValues() {
     document.getElementById("advanceCivButton").innerHTML = "Advance to next civilization" +
     "<span class='upgradeDescription'>"+ gV.nbLivingHumansToAdvance +" living humans</span>";
 
+    const soulVesselsButton = document.getElementById("soulVessels");
     soulVesselsButton.innerHTML = "Soul vessels (" + gV.upgradeNumbers["soulVessels"] + ")<br>" + 
     "Next: " + numberFormat(Math.floor(gV.upgradeCosts["soulVessels"])) +" souls" + 
     '<span class="upgradeDescription" style="font-size: 10px;">Reset souls for a boost to soul gains</span>'

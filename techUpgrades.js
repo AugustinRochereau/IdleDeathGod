@@ -1,62 +1,66 @@
-function techUpgrade(name, cost, isactive, canbuy, parents, upgradetype,buyfunction) {
+function techUpgrade(name, cost, isactive, canbuy, parents, buyfunction, hudfunction) {
     this.name = name;
     this.cost = cost;
     this.isactive = isactive;
     this.canbuy = canbuy;
     this.parents = parents;
     this.buyfunction = buyfunction;
-    this.upgradetype = upgradetype; // 0 for growth upgrade -- 1 for major unlock
+		this.hudfunction = hudfunction;
 }
 
+
 technologies = {
-    "tech-fire": new techUpgrade("Fire", 50, false, true, [], 0,
+    "tech-fire": new techUpgrade("Fire", 50, false, true, [],
      function () {
       gV.maxLivingHumans*=2;
       TextBox.addText("You bring humans fire. It helps them survive.");
-     }),
-    "tech-tools1": new techUpgrade("Tools 1", 100, false, false, ["tech-fire"], 0,
+     }, function(){}),
+    "tech-tools1": new techUpgrade("Tools 1", 100, false, false, ["tech-fire"], 
     function () {
       gV.maxLivingHumans*=2;
       TextBox.addText("Out of boredom, you take human form and explain to one guy " +
                       "how to make tools using rocks. He was very impressed.");
-    }),
-    "tech-crops": new techUpgrade("Crops", 500, false, false, ["tech-tools1"], 0,
+    }, function(){}),
+    "tech-crops": new techUpgrade("Crops", 500, false, false, ["tech-tools1"], 
     function() {
       gV.maxLivingHumans*=2;
       TextBox.addText("PLACEHOLDER_UNLOCK_CROPS.");
-    }),
-    "tech-huts": new techUpgrade("Huts", 200, false, false, ["tech-tools1"], 0,
+    }, function(){}),
+    "tech-huts": new techUpgrade("Huts", 200, false, false, ["tech-tools1"], 
     function() {
       gV.growthSlowdown -= 0.2;
       TextBox.addText("PLACEHOLDER_UNLOCK_HUTS.");
-    }),
-    "tech-speech": new techUpgrade("Speech", 1000, false, false, ["tech-huts"], 0,
+    }, function(){}),
+    "tech-speech": new techUpgrade("Speech", 1000, false, false, ["tech-huts"], 
     function() {
       gV.soulPointMultiplier *= 1.2;
       TextBox.addText("God is happy that you brought his creatures all the way to this advanced form of communication.")
-    }),
-    "tech-unlock-soul-vessels": new techUpgrade("Unlock Soul Vessels", 2000, false, false, ["tech-crops"], 1,
+    }, function(){}),
+    "tech-unlock-soul-vessels": new techUpgrade("Unlock Soul Vessels", 2000, false, false, ["tech-crops"], 
+		function() {}
+			,
     function() {
       document.getElementById("soulVessels").style.display = "block";
       TextBox.addText("Tinkering with the fabric of souls led to the creation of soul vessels. More souls for you");
     }),
-    "tech-unlock-world-tendancy": new techUpgrade("World Tendancy", 5000, false, false, ["tech-speech"], 1,
+    "tech-unlock-world-tendancy": new techUpgrade("World Tendancy", 5000, false, false, ["tech-speech"], 
+			function(){},
     function(){
       document.getElementById("worldTendancy").style.display = "block";
       TextBox.addText("PLACEHOLDER_UNLOCK_WORLD_TENDANCY");
     }),
-    "tech-money-system": new techUpgrade("Money System", 8000, false, false, ["tech-unlock-soul-vessels"], 0,
+    "tech-money-system": new techUpgrade("Money System", 8000, false, false, ["tech-unlock-soul-vessels"], 
     function (){
         gV.maxHumansGrowthRateMultiplierCondition = 1;
-    }),
+    }, function(){}),
     "tech-basic-medicine": new techUpgrade("Basic Medicine", 50000, false, false, ["tech-unlock-world-tendancy"], 0,
     function (){
         gV.worldTendancyMaxLifeExpectancy += 10;
-    }),
-    "tech-disease-mutation": new techUpgrade("Disease Mutation", 100000, false, false, ["tech-money-system"], 0,
+    }, function(){}),
+    "tech-disease-mutation": new techUpgrade("Disease Mutation", 100000, false, false, ["tech-money-system"], 
     function(){
         diseaseMutation = true;
-    }),
+    },function(){}),
 }
 
 // let worldTendancyMinLifeExpectancy = 15;

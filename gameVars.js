@@ -60,5 +60,19 @@ let gV = // Game Vars
 
 function resetGame() 
 {
+	resetToDefaultValues();
+	// Reset the gameVars
 	gV = { ...baseValues};
+	// And also the technologies
+	
+	for(var key in technologies)
+	{
+		technologies[key].isactive = false;
+		technologies[key].canbuy = false;
+	}
+
+	updateTechDependencies()
+
+	
+
 }
